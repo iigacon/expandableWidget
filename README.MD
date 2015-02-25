@@ -2,8 +2,6 @@ Expandable View
 ========
 Android custom state View Group - Expandable View UI library
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FlipView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1073)
-
 
 ABOUT
 ------

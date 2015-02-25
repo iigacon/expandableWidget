@@ -11,7 +11,7 @@ If you have a need to have a UI component which will act similar to toggle butto
 
 
 ![image](art/device-2015-02-25-223905.png)
-![image](art/device-2015-02-25-225123.png)
+![image](art/device-view.png)
 
 
 GRADLE

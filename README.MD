@@ -10,8 +10,8 @@ ABOUT
 If you have a need to have a UI component which will act similar to toggle button or be like a view group with state checked/unchecked this is a right place for you.
 
 
-![image](art/device-2015-02-25-223905.png | height = 250px)
-![image](art/device-view.png | height = 250px)
+![image](art/device-2015-02-25-223905.png)
+![image](art/device-view.png)
 
 
 GRADLE

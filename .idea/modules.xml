@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eexpandedview/eexpandedview.iml" filepath="$PROJECT_DIR$/eexpandedview/eexpandedview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eexpandedviewsample/eexpandedviewsample.iml" filepath="$PROJECT_DIR$/eexpandedviewsample/eexpandedviewsample.iml" />
       <module fileurl="file://$PROJECT_DIR$/expandableWidget.iml" filepath="$PROJECT_DIR$/expandableWidget.iml" />
     </modules>
   </component>

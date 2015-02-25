@@ -6,10 +6,11 @@ package com.hb.hkm.hkmeexpandedview;
 public class SpringSupport {
     private float full_height = 1, fcompressed;
 
-    public SpringSupport(int expanded, int compressed) {
-        float t = (float) compressed / (float) expanded;
+    public SpringSupport(int JustExpanded, int compressed) {
+        float h = ((float) JustExpanded + (float) compressed);
+        float t = (float) compressed / h;
         fcompressed = t;
-        full_height = (float) expanded;
+        full_height = h;
     }
 
     public int getScaledHeight(float scale) {

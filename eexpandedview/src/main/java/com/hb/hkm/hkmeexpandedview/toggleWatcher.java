@@ -9,7 +9,7 @@ public class toggleWatcher {
     private final ArrayList<CatelogView> list = new ArrayList<CatelogView>();
 
     public toggleWatcher() {
-
+        list.clear();
     }
 
     public void addItem(CatelogView v) {

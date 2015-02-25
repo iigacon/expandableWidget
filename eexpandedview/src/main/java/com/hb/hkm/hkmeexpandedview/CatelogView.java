@@ -26,8 +26,7 @@ import static com.hb.hkm.hkmeexpandedview.R.styleable;
  * Created by hesk on 2/24/15.
  */
 public class CatelogView extends LinearLayout implements View.OnClickListener, SpringListener {
-    private boolean mExpanded = false;
-    private ImageView image_location;
+
     private LinearLayout.LayoutParams mCompressedParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, 50);
 
@@ -93,6 +92,8 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         init(color);
     }
 
+    private boolean mExpanded = false;
+    private ImageView image_location;
     private int
             resLayout,
             red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
@@ -146,7 +147,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 mExpandedParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, (int) tp);
 
-                springSystemsupport = new SpringSupport((int) tp, (int) cateb.getHeight());
+                springSystemsupport = new SpringSupport(height, (int) cateb.getHeight());
 
                 //
                 // childLayout.setLayoutParams();
@@ -159,8 +160,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 // Add a listener to observe the motion of the spring.
                 spring.addListener(this);
                 // Set the spring in motion; moving from 0 to 1
-                spring.setEndValue(1);
-
+                // spring.setEndValue(1);
             }
         } else {
             setLayoutParams(mCompressedParams);
@@ -179,9 +179,9 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     @Override
     public void onClick(View v) {
         if (cateb.hasSpring()) {
-            mExpanded = !mExpanded;
+            boolean f = !mExpanded;
             //  float t = mExpanded ? 1 : springSystemsupport.getFcompressed();
-            spring.setEndValue(mExpanded ? 1 : springSystemsupport.getFcompressed());
+            spring.setEndValue(f ? 1 : springSystemsupport.getFcompressed());
         } else {
             mExpanded = !mExpanded;
             //invalidate();
@@ -199,17 +199,13 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
     public void triggerClose() {
         if (mExpanded) {
-            mExpanded = false;
             if (cateb.hasSpring()) {
                 spring.setEndValue(springSystemsupport.getFcompressed());
             } else {
+                mExpanded = false;
                 changeLayout(mCompressedParams);
             }
         }
-    }
-
-    public boolean isOpenned() {
-        return mExpanded;
     }
 
     @Override
@@ -239,11 +235,11 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
     @Override
     public void onSpringActivate(Spring spring) {
-
+        //  mExpanded = false;
     }
 
     @Override
     public void onSpringEndStateChange(Spring spring) {
-
+        mExpanded = !mExpanded;
     }
 }

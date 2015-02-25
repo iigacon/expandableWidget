@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
             h.add(new DataBind("dfg432243", "4Sfs9"));
 
             CatelogViewBuilder cb = new CatelogViewBuilder();
-            cb
+            cb.enableFBSpring(true)
                     .preset_src(R.drawable.bike, getResources().getDimension(R.dimen.home_collapsed))
                     .rndColor()
                     .setDataList(h);
@@ -42,10 +42,10 @@ public class MainActivity extends ActionBarActivity {
         // case here because the container has the attribute "animateLayoutChanges" set to true
         // in the layout file. You can also call setLayoutTransition(new LayoutTransition()) in
         // code to set a LayoutTransition on any container.
-        LayoutTransition transition = container.getLayoutTransition();
+        // LayoutTransition transition = container.getLayoutTransition();
         // New capability as of Jellybean; monitor the container for *all* layout changes
         // (not just add/remove/visibility changes) and animate these changes as well.
-        transition.enableTransitionType(LayoutTransition.CHANGING);
+        //  transition.enableTransitionType(LayoutTransition.CHANGING);
     }
 
     @Override

@@ -13,6 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringListener;
+import com.facebook.rebound.SpringSystem;
 import com.hb.hkm.hkmeexpandedview.list.DataBind;
 import com.hb.hkm.hkmeexpandedview.list.KRAdapter;
 
@@ -21,7 +25,7 @@ import static com.hb.hkm.hkmeexpandedview.R.styleable;
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogView extends LinearLayout implements View.OnClickListener {
+public class CatelogView extends LinearLayout implements View.OnClickListener, SpringListener {
     private boolean mExpanded = false;
     private ImageView image_location;
     private LinearLayout.LayoutParams mCompressedParams = new LinearLayout.LayoutParams(
@@ -98,6 +102,9 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
     private CatelogViewBuilder cateb;
     private ArrayAdapter<DataBind> listAdapter;
 
+    private Spring spring;
+    private SpringSupport springSystemsupport;
+
     private RelativeLayout.LayoutParams getParams() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -107,11 +114,15 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
     private void init(int color) {
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.TOP);
-        setOnClickListener(this);
         setBackgroundColor(color);
+
+
+
+
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
         image_location = (ImageView) findViewById(R.id.base_image_frame);
+
         childLayout = (ListView) findViewById(R.id.list);
         if (cateb != null) {
             if (cateb.getResId() > 0 && cateb.getHeight() > 0f) {
@@ -119,9 +130,8 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
                 image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
                 image_location.setVisibility(View.VISIBLE);
                 image_location.setLayoutParams(mCompressedParams);
+                image_location.setOnClickListener(this);
                 setLayoutParams(mCompressedParams);
-            } else {
-                // throw new IllegalArgumentException("Bad image source id or bad header height!");
             }
 
             if (cateb.getPrimaryList().size() > 0) {
@@ -137,10 +147,23 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
                 float tp = height + cateb.getHeight();
                 mExpandedParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, (int) tp);
+
+                springSystemsupport = new SpringSupport((int) tp, (int) cateb.getHeight());
+
                 //
                 // childLayout.setLayoutParams();
             }
+            if (cateb.getspring()) {
+                // Create a system to run the physics loop for a set of springs.
+                SpringSystem springSystem = SpringSystem.create();
+                // Add a spring to the system.
+                spring = springSystem.createSpring();
+                // Add a listener to observe the motion of the spring.
+                spring.addListener(this);
+                // Set the spring in motion; moving from 0 to 1
+                spring.setEndValue(1);
 
+            }
         } else {
             setLayoutParams(mCompressedParams);
         }
@@ -149,10 +172,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
                     LinearLayout.LayoutParams.MATCH_PARENT, 400);
         else mExpandedParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, getMeasuredHeight());*/
-
-
     }
-
 
     public void setImageVisible(boolean visible) {
         image_location.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -160,10 +180,16 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        setLayoutParams(mExpanded ? mCompressedParams : mExpandedParams);
-        mExpanded = !mExpanded;
-        //invalidate();
-        requestLayout();
+        if (cateb.getspring()) {
+            mExpanded = !mExpanded;
+          //  float t = mExpanded ? 1 : springSystemsupport.getFcompressed();
+            spring.setEndValue(mExpanded ? 1 : springSystemsupport.getFcompressed());
+        } else {
+            setLayoutParams(mExpanded ? mCompressedParams : mExpandedParams);
+            mExpanded = !mExpanded;
+            //invalidate();
+            requestLayout();
+        }
     }
 
     public boolean isOpenned() {
@@ -175,4 +201,31 @@ public class CatelogView extends LinearLayout implements View.OnClickListener {
         //draw the View
     }
 
+    @Override
+    public void onSpringUpdate(Spring spring) {
+        if (cateb.getspring()) {
+            float value = (float) spring.getCurrentValue();
+            float scale = 1f - (value * 0.5f);
+            getLayoutParams().height = springSystemsupport.getScaledHeight(scale);
+            requestLayout();
+        }
+
+        //   myView.setScaleX(scale);
+        //    myView.setScaleY(scale);
+    }
+
+    @Override
+    public void onSpringAtRest(Spring spring) {
+
+    }
+
+    @Override
+    public void onSpringActivate(Spring spring) {
+
+    }
+
+    @Override
+    public void onSpringEndStateChange(Spring spring) {
+
+    }
 }

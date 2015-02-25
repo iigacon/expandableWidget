@@ -15,9 +15,15 @@ public class CatelogViewBuilder {
     private int resLayout = 0, red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0, resSrcId = 0;
     private float collapsed_height;
     private ArrayList<DataBind> list_source;
+    private boolean spring_enable = false;
 
     public CatelogViewBuilder() {
 
+    }
+
+    public CatelogViewBuilder enableFBSpring(boolean b) {
+        spring_enable = b;
+        return this;
     }
 
     public CatelogViewBuilder preset_src(int src, float height) {
@@ -67,6 +73,10 @@ public class CatelogViewBuilder {
             resLayout = R.layout.l_default;
         }
         return resLayout;
+    }
+
+    public boolean getspring() {
+        return spring_enable;
     }
 
     public int getResId() {

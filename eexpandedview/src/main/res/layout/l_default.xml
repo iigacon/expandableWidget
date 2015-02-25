@@ -8,7 +8,7 @@
         android:id="@+id/label_field"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/background_material_dark"
+        android:textColor="#fffd8a57"
         android:text="demo text" />
 
 </LinearLayout>

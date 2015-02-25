@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.hb.hkm.hkmeexpandedview.CatelogView;
 import com.hb.hkm.hkmeexpandedview.CatelogViewBuilder;
 import com.hb.hkm.hkmeexpandedview.list.DataBind;
+import com.hb.hkm.hkmeexpandedview.toggleWatcher;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity {
 
     protected void init_expandtabs() throws Resources.NotFoundException {
+
+        final toggleWatcher tw = new toggleWatcher();
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
         for (int i = 0; i < 10; ++i) {
@@ -30,13 +33,20 @@ public class MainActivity extends ActionBarActivity {
             h.add(new DataBind("7s2ef3", "4Sfs9"));
             h.add(new DataBind("dfg432243", "4Sfs9"));
 
+
             CatelogViewBuilder cb = new CatelogViewBuilder();
             cb.enableFBSpring(true)
                     .preset_src(R.drawable.bike, getResources().getDimension(R.dimen.home_collapsed))
                     .rndColor()
-                    .setDataList(h);
+                    .setDataList(h)
+
+
+                    .setWatcher(tw);
+
+
             CatelogView c = new CatelogView(this, cb);
             container.addView(c);
+            tw.addItem(c);
         }
         // Note that this assumes a LayoutTransition is set on the container, which is the
         // case here because the container has the attribute "animateLayoutChanges" set to true

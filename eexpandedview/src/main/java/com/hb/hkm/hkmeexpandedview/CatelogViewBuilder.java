@@ -16,9 +16,17 @@ public class CatelogViewBuilder {
     private float collapsed_height;
     private ArrayList<DataBind> list_source;
     private boolean spring_enable = false;
+    private toggleWatcher watcher;
 
     public CatelogViewBuilder() {
 
+    }
+
+    private int tag_tag;
+
+    public CatelogViewBuilder setTag(int k) {
+        tag_tag = k;
+        return this;
     }
 
     public CatelogViewBuilder enableFBSpring(boolean b) {
@@ -75,7 +83,7 @@ public class CatelogViewBuilder {
         return resLayout;
     }
 
-    public boolean getspring() {
+    public boolean hasSpring() {
         return spring_enable;
     }
 
@@ -89,5 +97,18 @@ public class CatelogViewBuilder {
 
     public int getColor() {
         return 0xff << 24 | (red << 16) | (green << 8) | blue;
+    }
+
+    public CatelogViewBuilder setWatcher(toggleWatcher t) {
+        watcher = t;
+        return this;
+    }
+
+    public boolean hasWatcher() {
+        return watcher != null;
+    }
+
+    public void notifyWatcher(CatelogView view) {
+        watcher.onSelect(view);
     }
 }

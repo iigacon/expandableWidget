@@ -117,8 +117,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         setBackgroundColor(color);
 
 
-
-
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
         image_location = (ImageView) findViewById(R.id.base_image_frame);
@@ -153,7 +151,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 //
                 // childLayout.setLayoutParams();
             }
-            if (cateb.getspring()) {
+            if (cateb.hasSpring()) {
                 // Create a system to run the physics loop for a set of springs.
                 SpringSystem springSystem = SpringSystem.create();
                 // Add a spring to the system.
@@ -180,15 +178,33 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
     @Override
     public void onClick(View v) {
-        if (cateb.getspring()) {
+        if (cateb.hasSpring()) {
             mExpanded = !mExpanded;
-          //  float t = mExpanded ? 1 : springSystemsupport.getFcompressed();
+            //  float t = mExpanded ? 1 : springSystemsupport.getFcompressed();
             spring.setEndValue(mExpanded ? 1 : springSystemsupport.getFcompressed());
         } else {
-            setLayoutParams(mExpanded ? mCompressedParams : mExpandedParams);
             mExpanded = !mExpanded;
             //invalidate();
-            requestLayout();
+            changeLayout(mExpanded ? mCompressedParams : mExpandedParams);
+        }
+        if (cateb.hasWatcher()) {
+            cateb.notifyWatcher(this);
+        }
+    }
+
+    private void changeLayout(LayoutParams l) {
+        setLayoutParams(l);
+        requestLayout();
+    }
+
+    public void triggerClose() {
+        if (mExpanded) {
+            mExpanded = false;
+            if (cateb.hasSpring()) {
+                spring.setEndValue(springSystemsupport.getFcompressed());
+            } else {
+                changeLayout(mCompressedParams);
+            }
         }
     }
 
@@ -203,11 +219,13 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
     @Override
     public void onSpringUpdate(Spring spring) {
-        if (cateb.getspring()) {
+        if (cateb.hasSpring()) {
             float value = (float) spring.getCurrentValue();
             float scale = 1f - (value * 0.5f);
-            getLayoutParams().height = springSystemsupport.getScaledHeight(scale);
-            requestLayout();
+            //getLayoutParams().height = springSystemsupport.getScaledHeight(scale);
+            changeLayout(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    springSystemsupport.getScaledHeight(scale)));
         }
 
         //   myView.setScaleX(scale);

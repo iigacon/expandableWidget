@@ -1,4 +1,4 @@
-Expandable View [![API](https://img.shields.io/badge/API-16%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=16)
+Expandable Catelog View [![API](https://img.shields.io/badge/API-16%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=16)
 ========
 Android custom state View Group - Expandable View UI library
 

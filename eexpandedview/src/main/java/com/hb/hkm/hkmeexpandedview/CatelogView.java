@@ -204,7 +204,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         if (cateb.hasSpring()) {
             //   boolean f = !mExpanded;
             //  float t = mExpanded ? 1 : springSystemsupport.getFcompressed();
-            spring.setEndValue(!mExpanded ? 1d : springSystemsupport.getFcompressed());
+            spring.setEndValue(!mExpanded ? springSystemsupport.getFcompressed() : 1d);
             Log.d(TAG, "onclick val expanded:" + !mExpanded);
         } else {
             mExpanded = !mExpanded;

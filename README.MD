@@ -85,15 +85,6 @@ BUILD LAYOUT PROGRAMMICALLY
     
 ```
 
-API
-------
-
-```java
-    public static interface FlipViewChangeListener {
-        void onFlipViewClick(FlipView flipView, boolean isChecked);
-    }
-```
-
 
 
 License

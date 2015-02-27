@@ -8,7 +8,7 @@ public class SpringSupport {
 
     public SpringSupport(int JustExpanded, int compressed) {
         float h = ((float) JustExpanded + (float) compressed);
-        float t = (float) compressed / h;
+        float t = (float) compressed;
         fcompressed = t;
         full_height = h;
     }
@@ -19,5 +19,9 @@ public class SpringSupport {
 
     public float getFcompressed() {
         return fcompressed;
+    }
+
+    public float getFHeight() {
+        return full_height;
     }
 }

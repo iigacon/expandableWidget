@@ -1,6 +1,5 @@
 package com.hb.hkm.eexpandedviewsample;
 
-import android.animation.LayoutTransition;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
         final toggleWatcher tw = new toggleWatcher();
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 3; i++) {
             ArrayList<DataBind> h = new ArrayList<DataBind>();
             h.add(new DataBind("sfsf6", "Sfs4e"));
             h.add(new DataBind("5s3fsf5", "2Sfs"));
@@ -32,22 +31,27 @@ public class MainActivity extends ActionBarActivity {
             h.add(new DataBind("234regerg", "2Sfs"));
             h.add(new DataBind("7s2ef3", "4Sfs9"));
             h.add(new DataBind("dfg432243", "4Sfs9"));
-
+            h.add(new DataBind("sfsf6", "Sfs4e"));
+            h.add(new DataBind("5s3fsf5", "2Sfs"));
+            h.add(new DataBind("grege", "2Sfs"));
+            h.add(new DataBind("sfsf6", "Sfs4e"));
+            h.add(new DataBind("5s3fsf5", "2Sfs"));
+            h.add(new DataBind("grege", "2Sfs"));
+            h.add(new DataBind("sfsf6", "Sfs4e"));
+            h.add(new DataBind("5s3fsf5", "2Sfs"));
+            h.add(new DataBind("grege", "2Sfs"));
 
             CatelogViewBuilder cb = new CatelogViewBuilder();
             cb.enableFBSpring(true)
                     .preset_src(R.drawable.bike, getResources().getDimension(R.dimen.home_collapsed))
                     .rndColor()
                     .setDataList(h)
-
-
                     .setWatcher(tw);
-
-
             CatelogView c = new CatelogView(this, cb);
             container.addView(c);
-            tw.addItem(c);
+
         }
+        tw.addContainer(container);
         // Note that this assumes a LayoutTransition is set on the container, which is the
         // case here because the container has the attribute "animateLayoutChanges" set to true
         // in the layout file. You can also call setLayoutTransition(new LayoutTransition()) in

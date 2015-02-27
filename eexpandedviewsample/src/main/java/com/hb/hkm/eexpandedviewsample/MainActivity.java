@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.hb.hkm.hkmeexpandedview.CatelogView;
 import com.hb.hkm.hkmeexpandedview.CatelogViewBuilder;
-import com.hb.hkm.hkmeexpandedview.list.DataBind;
+import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
 import com.hb.hkm.hkmeexpandedview.toggleWatcher;
 
 import java.util.ArrayList;
@@ -23,23 +23,23 @@ public class MainActivity extends ActionBarActivity {
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
         for (int i = 0; i < 3; i++) {
-            ArrayList<DataBind> h = new ArrayList<DataBind>();
-            h.add(new DataBind("sfsf6", "Sfs4e"));
-            h.add(new DataBind("5s3fsf5", "2Sfs"));
-            h.add(new DataBind("grege", "2Sfs"));
-            h.add(new DataBind("42gw", "2Sfs"));
-            h.add(new DataBind("234regerg", "2Sfs"));
-            h.add(new DataBind("7s2ef3", "4Sfs9"));
-            h.add(new DataBind("dfg432243", "4Sfs9"));
-            h.add(new DataBind("sfsf6", "Sfs4e"));
-            h.add(new DataBind("5s3fsf5", "2Sfs"));
-            h.add(new DataBind("grege", "2Sfs"));
-            h.add(new DataBind("sfsf6", "Sfs4e"));
-            h.add(new DataBind("5s3fsf5", "2Sfs"));
-            h.add(new DataBind("grege", "2Sfs"));
-            h.add(new DataBind("sfsf6", "Sfs4e"));
-            h.add(new DataBind("5s3fsf5", "2Sfs"));
-            h.add(new DataBind("grege", "2Sfs"));
+            ArrayList<BasicDataBind> h = new ArrayList<BasicDataBind>();
+            h.add(new BasicDataBind("sfsf6", "Sfs4e"));
+            h.add(new BasicDataBind("5s3fsf5", "2Sfs"));
+            h.add(new BasicDataBind("grege", "2Sfs"));
+            h.add(new BasicDataBind("42gw", "2Sfs"));
+            h.add(new BasicDataBind("234regerg", "2Sfs"));
+            h.add(new BasicDataBind("7s2ef3", "4Sfs9"));
+            h.add(new BasicDataBind("dfg432243", "4Sfs9"));
+            h.add(new BasicDataBind("sfsf6", "Sfs4e"));
+            h.add(new BasicDataBind("5s3fsf5", "2Sfs"));
+            h.add(new BasicDataBind("grege", "2Sfs"));
+            h.add(new BasicDataBind("sfsf6", "Sfs4e"));
+            h.add(new BasicDataBind("5s3fsf5", "2Sfs"));
+            h.add(new BasicDataBind("grege", "2Sfs"));
+            h.add(new BasicDataBind("sfsf6", "Sfs4e"));
+            h.add(new BasicDataBind("5s3fsf5", "2Sfs"));
+            h.add(new BasicDataBind("grege", "2Sfs"));
 
             CatelogViewBuilder cb = new CatelogViewBuilder();
             cb.enableFBSpring(true)

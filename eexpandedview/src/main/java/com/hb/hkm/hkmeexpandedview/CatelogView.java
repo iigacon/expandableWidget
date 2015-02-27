@@ -18,8 +18,11 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-import com.hb.hkm.hkmeexpandedview.list.DataBind;
-import com.hb.hkm.hkmeexpandedview.list.KRAdapter;
+import com.hb.hkm.hkmeexpandedview.bindingholder.SlickHolder;
+import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
+import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
+import com.hb.hkm.hkmeexpandedview.list.BasicListingAdapter;
+import com.squareup.picasso.Picasso;
 
 import static com.hb.hkm.hkmeexpandedview.R.styleable;
 
@@ -101,10 +104,11 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             resLayout,
             red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
     private String src_url = "";
+    private View frame;
     private LinearLayout layoutnow;
     private ListView childLayout;
     private CatelogViewBuilder cateb;
-    private ArrayAdapter<DataBind> listAdapter;
+    private ArrayAdapter<BasicDataBind> listAdapter;
 
     private Spring spring;
     private SpringSupport springSystemsupport;
@@ -115,6 +119,8 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         return params;
     }
 
+    final Picasso theloadingimagepicasso = Picasso.with(getContext());
+
     private void init(int color) {
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.TOP);
@@ -123,13 +129,36 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
-        image_location = (ImageView) findViewById(R.id.base_image_frame);
-
+        image_location = (ImageView) findViewById(R.id.image_src);
+        frame = findViewById(R.id.base_frame);
         childLayout = (ListView) findViewById(R.id.list);
         if (cateb != null) {
-            if (cateb.getResId() > 0 && cateb.getHeight() > 0f) {
+            if (cateb.getHeight() > 0f) {
                 mCompressedParams = new LinearLayout.LayoutParams(-1, (int) cateb.getHeight());
-                image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
+                frame.setLayoutParams(mCompressedParams);
+                frame.setBackgroundResource(R.drawable.normal_gradient);
+                if (cateb.getResId() == 0) {
+                    try {
+                        theloadingimagepicasso
+                                .load(cateb.getBannerImageUrl())
+                                .fit().centerCrop()
+                                .placeholder(R.drawable.load)
+                                .error(R.drawable.load)
+                                .into(image_location);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
+                }
+
+                if (cateb.getResLayoutSecondLayer() != 0 || !cateb.getTitleOnSecondLayer().equalsIgnoreCase("")) {
+                    if (cateb.getResLayoutSecondLayer() == 0) {
+
+                    } else {
+
+                    }
+                }
                 image_location.setVisibility(View.VISIBLE);
                 image_location.setLayoutParams(mCompressedParams);
                 image_location.setOnClickListener(this);
@@ -143,7 +172,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
                 child.measure(widthMeasureSpec, heightMeasureSpec);
 
-                listAdapter = new KRAdapter(getContext(), resLayout, cateb.getPrimaryList());
+                listAdapter = new BasicListingAdapter(getContext(), resLayout, cateb.getPrimaryList());
                 childLayout.setAdapter(listAdapter);
                 final int height = child.getMeasuredHeight();
                 Log.d(TAG, "layout height: " + height);

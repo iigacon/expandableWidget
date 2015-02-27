@@ -1,6 +1,7 @@
 package com.hb.hkm.hkmeexpandedview;
 
-import com.hb.hkm.hkmeexpandedview.list.DataBind;
+import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
+import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
 
 import java.util.ArrayList;
 
@@ -9,24 +10,19 @@ import java.util.ArrayList;
  */
 public class CatelogViewBuilder {
     public enum CHILD_LAYOUT_TYPE {
-        DEFAULT, ICON_TEXT
+        DEFAULT, ICON_TEXT, CUSTOM
     }
 
     private int resLayout = 0, red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0, resSrcId = 0;
     private float collapsed_height;
-    private ArrayList<DataBind> list_source;
+    private ArrayList<BasicDataBind> list_source;
     private boolean spring_enable = false;
     private toggleWatcher watcher;
+    private String imgurl = "";
 
     public CatelogViewBuilder() {
-
-    }
-
-    private int tag_tag;
-
-    public CatelogViewBuilder setTag(int k) {
-        tag_tag = k;
-        return this;
+        setLayout(CHILD_LAYOUT_TYPE.DEFAULT);
+        enableFBSpring(true);
     }
 
     public CatelogViewBuilder enableFBSpring(boolean b) {
@@ -34,8 +30,16 @@ public class CatelogViewBuilder {
         return this;
     }
 
+    public CatelogViewBuilder preset_src(String image_uri, float height) {
+        imgurl = image_uri;
+        resSrcId = 0;
+        collapsed_height = height;
+        return this;
+    }
+
     public CatelogViewBuilder preset_src(int src, float height) {
         resSrcId = src;
+        imgurl = "";
         collapsed_height = height;
         return this;
     }
@@ -47,6 +51,12 @@ public class CatelogViewBuilder {
         return this;
     }
 
+    public CatelogViewBuilder setItemLayout(int resLayoutId) {
+        resLayout = resLayoutId;
+        setLayout(CHILD_LAYOUT_TYPE.CUSTOM);
+        return this;
+    }
+
     public CatelogViewBuilder setLayout(CHILD_LAYOUT_TYPE res) {
         switch (res) {
             case DEFAULT:
@@ -55,6 +65,8 @@ public class CatelogViewBuilder {
             case ICON_TEXT:
                 resLayout = R.layout.l_icon_text_c;
                 break;
+            case CUSTOM:
+                break;
             default:
                 resLayout = R.layout.l_default;
                 break;
@@ -62,18 +74,48 @@ public class CatelogViewBuilder {
         return this;
     }
 
-    public CatelogViewBuilder setCustomLayout(int res) {
-        resLayout = res;
+    private int resLayoutSecondLayer = 0;
+    private int resStyleId = 0;
+    private String titleSecondLayer = "";
+
+    public CatelogViewBuilder setSecondLayerOnBanner(int resId) {
+        resLayoutSecondLayer = resId;
+        return this;
+
+    }
+
+    public int getResLayoutSecondLayer() {
+        return resLayoutSecondLayer;
+    }
+
+    public CatelogViewBuilder setImageTitle(String content) {
+        titleSecondLayer = content;
+        resLayout = 0;
         return this;
     }
 
-    public CatelogViewBuilder setDataList(ArrayList<DataBind> str) {
+    public CatelogViewBuilder setCustomLayout(int resId) {
+        resLayout = resId;
+        titleSecondLayer = "";
+        return this;
+    }
+
+    public CatelogViewBuilder withCustomStyle(int styleId) {
+        resStyleId = styleId;
+        return this;
+    }
+
+    public CatelogViewBuilder setDataList(ArrayList<BasicDataBind> str) {
         list_source = str;
         return this;
     }
 
-    public ArrayList<DataBind> getPrimaryList() {
+    public ArrayList<BasicDataBind> getPrimaryList() {
         return list_source;
+    }
+
+    public String getTitleOnSecondLayer() {
+        return titleSecondLayer;
     }
 
     public int getLayoutResId() {
@@ -89,6 +131,10 @@ public class CatelogViewBuilder {
 
     public int getResId() {
         return resSrcId;
+    }
+
+    public String getBannerImageUrl() {
+        return imgurl;
     }
 
     public float getHeight() {

@@ -48,43 +48,9 @@ USAGE BY HARD CODE
 
 BUILD LAYOUT PROGRAMMICALLY
 ------
+[Default Presentation](https://github.com/jjhesk/expandableWidget/wiki#default-sample-code)
 
-```java
-
-  protected void init_expandtabs() throws Resources.NotFoundException {
-        final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
-        // Start with two views
-        for (int i = 0; i < 10; ++i) {
-            ArrayList<DataBind> h = new ArrayList<DataBind>();
-            h.add(new DataBind("sfsf6", "Sfs4e"));
-            h.add(new DataBind("5s3fsf5", "2Sfs"));
-            h.add(new DataBind("grege", "2Sfs"));
-            h.add(new DataBind("42gw", "2Sfs"));
-            h.add(new DataBind("234regerg", "2Sfs"));
-            h.add(new DataBind("7s2ef3", "4Sfs9"));
-            h.add(new DataBind("dfg432243", "4Sfs9"));
-
-            CatelogViewBuilder cb = new CatelogViewBuilder();
-            cb
-                    .preset_src(R.drawable.bike, getResources().getDimension(R.dimen.home_collapsed))
-                    .rndColor()
-                    .setDataList(h);
-            CatelogView c = new CatelogView(this, cb);
-            container.addView(c);
-        }
-        // Note that this assumes a LayoutTransition is set on the container, which is the
-        // case here because the container has the attribute "animateLayoutChanges" set to true
-        // in the layout file. You can also call setLayoutTransition(new LayoutTransition()) in
-        // code to set a LayoutTransition on any container.
-        LayoutTransition transition = container.getLayoutTransition();
-        // New capability as of Jellybean; monitor the container for *all* layout changes
-        // (not just add/remove/visibility changes) and animate these changes as well.
-        transition.enableTransitionType(LayoutTransition.CHANGING);
-    }
-    
-```
-
-
+[Advanced Presentation](https://github.com/jjhesk/expandableWidget/wiki#advanced-sample-code)
 
 License
 ----------

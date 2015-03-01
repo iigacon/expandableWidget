@@ -16,8 +16,52 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
+    final String[] sample_images = new String[]{
+            "http://1.bp.blogspot.com/-OOr0aY6bIVw/VOC-CtmeaMI/AAAAAAAAk-o/Szc9_sOtwUE/s1600/Shot%2BOf%2BThe%2BWeek.jpg",
+            "http://2.bp.blogspot.com/-Bmwh2nKu3Dg/VJxhEpmcL_I/AAAAAAAAkBQ/W4RNm2tEi4U/s1600/Jump%2BFesta%2B2015%2Bmain.png",
+            "http://4.bp.blogspot.com/-FZE142qPpEw/URKaFmLmMyI/AAAAAAAAWY8/KgO4mq8b83U/s1600/Armoed+Franky+SA-MAX01+main.png",
+            "http://2.bp.blogspot.com/-WCedbQmPqmU/Ud6Bep7c2EI/AAAAAAAAZV0/BPs6HV87ti8/s1600/Nico+Robin+EZ2+ZOOM00.png",
+            "http://2.bp.blogspot.com/-6ECE0JJVi7k/Ur79GaghC7I/AAAAAAAAdZk/cGlOLqZAbm8/s1600/ZOOM+Kalifa+L15+main.png",
+            "http://4.bp.blogspot.com/-ACcwF_O2sxA/VNkeKkLxadI/AAAAAAAAkz0/uMEM_sjkvO4/s1600/EXPO02%2BNeo%2BDX%2BMr.2%2BBon%2BKure%2Bmain.png"
+    };
+    final String[] image_title = new String[]{
+            "Shot",
+            "Jump Festa 2015",
+            "Armoed Franky",
+            "Nico Robin Edition-Z",
+            "Kalifa - P.O.P Limited Edition",
+            "Mr.2 Bon Kure Dome Tour Limitation Ver. - P.O.P Neo EX"
+    };
+    final String[] ItemsTitle = new String[]{
+            "Robin Nice!",
+            "K-Kill!",
+            "Luffy!",
+            "O - Z!",
+            "Zoro",
+            "Sixth"
+    };
 
-    protected void init_expandtabs() throws Resources.NotFoundException {
+    protected void example_2() throws Resources.NotFoundException, Exception {
+        // final toggleWatcher tw = new toggleWatcher();
+        final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
+        // Start with two views
+        for (int i = 0; i < image_title.length; i++) {
+            ArrayList<BasicDataBind> bb = new ArrayList<BasicDataBind>();
+            for (int h = 0; h < ItemsTitle.length; h++) {
+                bb.add(new BasicDataBind(ItemsTitle[h], "zxczx zxczxc"));
+            }
+            CatelogViewBuilder cb = new CatelogViewBuilder(this);
+            cb.preset_src(sample_images[i], getResources().getDimension(R.dimen.home_collapsed))
+                    .rndColor()
+                    .setImageTitle(image_title[i])
+                    .setDataList(bb);
+            // cb.setWatcher(tw);
+            container.addView(cb.create());
+        }
+        // tw.addContainer(container);
+    }
+
+    protected void example_1() throws Resources.NotFoundException {
 
         final toggleWatcher tw = new toggleWatcher();
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
@@ -41,14 +85,13 @@ public class MainActivity extends ActionBarActivity {
             h.add(new BasicDataBind("5s3fsf5", "2Sfs"));
             h.add(new BasicDataBind("grege", "2Sfs"));
 
-            CatelogViewBuilder cb = new CatelogViewBuilder();
+            CatelogViewBuilder cb = new CatelogViewBuilder(this);
             cb.enableFBSpring(true)
                     .preset_src(R.drawable.bike, getResources().getDimension(R.dimen.home_collapsed))
                     .rndColor()
                     .setDataList(h)
                     .setWatcher(tw);
-            CatelogView c = new CatelogView(this, cb);
-            container.addView(c);
+            container.addView(cb.create());
 
         }
         tw.addContainer(container);
@@ -66,7 +109,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init_expandtabs();
+        try {
+            example_2();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

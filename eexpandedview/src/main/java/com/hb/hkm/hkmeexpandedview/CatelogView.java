@@ -3,16 +3,19 @@ package com.hb.hkm.hkmeexpandedview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
@@ -33,11 +36,8 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     private static String TAG = ".CatelogView";
     // Create a system to run the physics loop for a set of springs.
     private static SpringSystem springSystem = SpringSystem.create();
-    private LinearLayout.LayoutParams mCompressedParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 50);
-
-    private LinearLayout.LayoutParams mExpandedParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 200);
+    private LinearLayout.LayoutParams mCompressedParams;
+    private LinearLayout.LayoutParams mExpandedParams;
 
     public CatelogView(Context context) {
         this(context, null, 0);
@@ -59,7 +59,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     }
 
     private void init(AttributeSet attrs) {
-
         viewWidthHalf = this.getMeasuredWidth() / 2;
         viewHeightHalf = this.getMeasuredHeight() / 2;
         int radius = 0;
@@ -68,7 +67,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         else
             radius = viewWidthHalf - 10;
 
-        int color = 0;
         int mred = (int) (Math.random() * 128 + 127);
         int mgreen = (int) (Math.random() * 128 + 127);
         int mblue = (int) (Math.random() * 128 + 127);
@@ -87,120 +85,129 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 a.recycle();
                 color = 0xff << 24 | (red << 16) | (green << 8) | blue;
             }
-        } else {
-            if (cateb != null) {
-                color = cateb.getColor();
-                resLayout = cateb.getLayoutResId();
-            }
-
         }
-
-        init(color);
+        init();
     }
 
     private boolean mExpanded = false;
     private ImageView image_location;
     private int
-            resLayout,
+            resLayout = 0,
+            color = 0,
             red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
     private String src_url = "";
-    private View frame;
+    private RelativeLayout frame;
     private LinearLayout layoutnow;
     private ListView childLayout;
+    private TextView text_view;
     private CatelogViewBuilder cateb;
     private ArrayAdapter<BasicDataBind> listAdapter;
-
+    private LinearLayout child;
     private Spring spring;
     private SpringSupport springSystemsupport;
 
-    private RelativeLayout.LayoutParams getParams() {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        return params;
+    private RelativeLayout.LayoutParams getParamsR(int h) {
+        // RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, h);
+        // params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        return new RelativeLayout.LayoutParams(-1, h);
+    }
+
+    private LayoutParams getParamsL(int h) {
+        return new LinearLayout.LayoutParams(-1, h);
     }
 
     final Picasso theloadingimagepicasso = Picasso.with(getContext());
 
-    private void init(int color) {
-        setOrientation(LinearLayout.VERTICAL);
-        setGravity(Gravity.TOP);
-        setBackgroundColor(color);
+    private int getItemLayoutId() {
+        return resLayout == 0 ? cateb.getChildItemLayoutResId() : resLayout;
+    }
 
-
+    private void inflate() {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
-        image_location = (ImageView) findViewById(R.id.image_src);
-        frame = findViewById(R.id.base_frame);
+        child = (LinearLayout) inflater.inflate(getItemLayoutId(), null, false);
+        frame = (RelativeLayout) findViewById(R.id.base_frame);
         childLayout = (ListView) findViewById(R.id.list);
-        if (cateb != null) {
-            if (cateb.getHeight() > 0f) {
-                mCompressedParams = new LinearLayout.LayoutParams(-1, (int) cateb.getHeight());
-                frame.setLayoutParams(mCompressedParams);
-                frame.setBackgroundResource(R.drawable.normal_gradient);
+        image_location = (ImageView) findViewById(R.id.image_src);
+        text_view = (TextView) findViewById(R.id.secondlayertext);
+    }
+
+    private void init_header() throws Exception {
+        if (cateb.getHeight() > 0f) {
+            mCompressedParams = getParamsL(cateb.getHeightWhole());
+            // frame.setLayoutParams(getParamsR(cateb.getHeightWhole()));
+            frame.getLayoutParams().height = cateb.getHeightWhole();
+            frame.setBackgroundResource(R.drawable.normal_gradient);
+            if (cateb.useFragment()) {
+
+            } else {
                 if (cateb.getResId() == 0) {
-                    try {
-                        theloadingimagepicasso
-                                .load(cateb.getBannerImageUrl())
-                                .fit().centerCrop()
-                                .placeholder(R.drawable.load)
-                                .error(R.drawable.load)
-                                .into(image_location);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    theloadingimagepicasso
+                            .load(cateb.getBannerImageUrl())
+                            .fit().centerCrop()
+                            .placeholder(R.drawable.load)
+                            .error(R.drawable.load)
+                            .into(image_location);
                 } else {
                     image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
                 }
-
-                if (cateb.getResLayoutSecondLayer() != 0 || !cateb.getTitleOnSecondLayer().equalsIgnoreCase("")) {
-                    if (cateb.getResLayoutSecondLayer() == 0) {
-
-                    } else {
-
-                    }
+            }
+            if (cateb.getResLayoutSecondLayer() != 0 || !cateb.getTitleOnSecondLayer().equalsIgnoreCase("")) {
+                if (cateb.getResLayoutSecondLayer() == 0) {
+                    text_view.setText(cateb.getTitleOnSecondLayer());
+                } else {
+                    text_view.setVisibility(GONE);
                 }
-                image_location.setVisibility(View.VISIBLE);
-                image_location.setLayoutParams(mCompressedParams);
-                image_location.setOnClickListener(this);
-                setLayoutParams(mCompressedParams);
             }
-
-            if (cateb.getPrimaryList().size() > 0) {
-                LinearLayout child = (LinearLayout) inflater.inflate(resLayout, null, false);
-                //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
-                int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.AT_MOST);
-                int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-                child.measure(widthMeasureSpec, heightMeasureSpec);
-
-                listAdapter = new BasicListingAdapter(getContext(), resLayout, cateb.getPrimaryList());
-                childLayout.setAdapter(listAdapter);
-                final int height = child.getMeasuredHeight();
-                Log.d(TAG, "layout height: " + height);
-                float tp = height + cateb.getHeight();
-                mExpandedParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, (int) tp);
-
-                springSystemsupport = new SpringSupport(height, (int) cateb.getHeight());
-
-                //
-                // childLayout.setLayoutParams();
-            }
-            if (cateb.hasSpring()) {
-                // Add a spring to the system.
-                spring = springSystem.createSpring();
-                // Add a listener to observe the motion of the spring.
-                spring.addListener(this);
-                // Set the spring in motion; moving from 0 to 1
-                spring.setEndValue(0);
-            }
-        } else {
-            setLayoutParams(mCompressedParams);
+            image_location.setVisibility(View.VISIBLE);
+            // image_location.setLayoutParams(mCompressedParams);
+            image_location.setOnClickListener(this);
+            // setLayoutParams(mCompressedParams);
         }
-     /*   if (getMeasuredHeight() == 0)
-            mExpandedParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 400);
-        else mExpandedParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, getMeasuredHeight());*/
+    }
+
+    private void init_spring() throws Exception {
+        if (cateb.hasSpring()) {
+            // Add a spring to the system.
+            spring = springSystem.createSpring();
+            // Add a listener to observe the motion of the spring.
+            spring.addListener(this);
+            // Set the spring in motion; moving from 0 to 1
+            spring.setEndValue(0);
+            Log.d(TAG, "ID:" + spring.getId());
+        }
+    }
+
+    private void init_listview() throws Exception {
+        if (cateb.getPrimaryList().size() > 0) {
+            //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
+
+            listAdapter = new BasicListingAdapter(getContext(), getItemLayoutId(), cateb.getPrimaryList());
+            childLayout.setAdapter(listAdapter);
+/*  int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
+                    int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY);
+                    child.measure(widthMeasureSpec, heightMeasureSpec);
+                    final int height = child.getMeasuredHeight() == 0 ? 400 : child.getMeasuredHeight();
+*/
+            final int height = 400;
+            Log.d(TAG, "layout height: " + height);
+            mExpandedParams = getParamsL((int) (height + cateb.getHeight()));
+            springSystemsupport = new SpringSupport(height, (int) cateb.getHeight());
+        }
+    }
+
+    private void init() {
+        setOrientation(LinearLayout.VERTICAL);
+        setGravity(Gravity.TOP);
+        setBackgroundColor(color == 0 ? cateb.getColor() == 0 ? 0 : cateb.getColor() : color);
+        inflate();
+        try {
+            init_header();
+            init_listview();
+            init_spring();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setImageVisible(boolean visible) {
@@ -224,11 +231,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             }
         }
         //        Log.d(toggleWatcher.TAG, "child item current state: " + mExpanded);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        //draw the View
     }
 
     @Override
@@ -272,9 +274,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(S.getCurrentValue(),
                     0, 1, springSystemsupport.getFcompressed(), springSystemsupport.getFHeight()
             );
-            changeLayout(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    (int) mappedValue));
+            changeLayout(getParamsL((int) mappedValue));
         }
 
         //   myView.setScaleX(scale);

@@ -12,7 +12,7 @@ If you have a need to have a UI component which can be add as a part of the cont
 
 
 
-CUSTOMIZATION FOR STANDALONE HARCODE IMPLEMENATION
+CUSTOMIZATION FOR STANDALONE HARDCODE IMPLEMENATION
 ------
 ```xml
 
@@ -51,6 +51,7 @@ BUILD LAYOUT PROGRAMMICALLY
 
 [Advanced Presentation](https://github.com/jjhesk/expandableWidget/wiki#advanced-sample-code)
 
+[Fragment Implementations](https://github.com/jjhesk/expandableWidget/wiki#advanced-sample-code)
 License
 ----------
 

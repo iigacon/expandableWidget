@@ -112,10 +112,10 @@ public class CatelogViewBuilder<T extends Fragment> {
      * fragment control display
      */
     private FragmentActivity fcontext;
-    private Class<T> customFragment;
+    private T customFragment;
     private boolean useFragmentInstead = false;
 
-    public CatelogViewBuilder setHeaderFragment(Class<T> fragment, FragmentActivity context) {
+    public CatelogViewBuilder setHeaderFragment(T fragment, FragmentActivity context) {
         useFragmentInstead = true;
         titleSecondLayer = "";
         fcontext = context;
@@ -140,7 +140,7 @@ public class CatelogViewBuilder<T extends Fragment> {
         return useFragmentInstead;
     }
 
-    public  Class<T> getCustomFragment() {
+    public T getCustomFragment() {
         return customFragment;
     }
 

@@ -35,5 +35,8 @@ public class v extends Fragment {
     fragmentTransaction.commit();
 
     http://stackoverflow.com/questions/17148285/replacing-a-fragment-with-another-fragment-of-the-same-class
+
+    https://books.google.com.hk/books?id=zaoK0Z2STlkC&pg=PA102&lpg=PA102&dq=initiate+generic+class+extend+fragment&source=bl&ots=6Yonc8Y-EM&sig=AtCwXT_2ROwe0SQr735TyVPiXxU&hl=zh-TW&sa=X&ei=go70VLHrJcbOmwWD7oK4CA&ved=0CFoQ6AEwBw#v=onepage&q=initiate%20generic%20class%20extend%20fragment&f=false
+
     */
 }

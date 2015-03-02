@@ -36,13 +36,13 @@ import static com.hb.hkm.hkmeexpandedview.R.styleable;
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogView extends LinearLayout implements View.OnClickListener, SpringListener {
+public class CatelogView<T extends Fragment> extends LinearLayout implements View.OnClickListener, SpringListener {
     private static String TAG = ".CatelogView";
     // Create a system to run the physics loop for a set of springs.
     private static SpringSystem springSystem = SpringSystem.create();
     private LinearLayout.LayoutParams mCompressedParams;
     private LinearLayout.LayoutParams mExpandedParams;
-    private Class<? extends Fragment> fragment;
+    private Fragment fragment;
 
     public CatelogView(Context context) {
         this(context, null, 0);
@@ -160,14 +160,12 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             if (cateb.useFragment()) {
                 if (cateb.getFTrans() != null) {
                     //     if (T instanceof Fragment) {
-                 //   fragment = (Class<? extends Fragment>) cateb.getCustomFragment();
-                 //   cateb.getFTrans().add(mframeLayout.getId(), Class<E> fragment, "fragment" + cateb.getResId())
-                 //   ;
-                 //   cateb.getFTrans().commit();
-                ///    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
-
-
-                    //     mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
+                    //  fragment = cateb.getCustomFragment();
+                    cateb.getFTrans().add(mframeLayout.getId(), cateb.getCustomFragment(), "fragment" + cateb.getResId());
+                    //   ;
+                    cateb.getFTrans().commit();
+                    ///    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
+                    mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
                 } else {
                     // Fragment fra = cateb.getCustomFragment();
                     // cateb.getV4Trans().add(mframeLayout.getId(), fra, "fragment" + cateb.getResId());

@@ -1,8 +1,11 @@
 package com.hb.hkm.hkmeexpandedview;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -103,6 +107,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     private CatelogViewBuilder cateb;
     private ArrayAdapter<BasicDataBind> listAdapter;
     private LinearLayout child;
+    private FrameLayout mframeLayout;
     private Spring spring;
     private SpringSupport springSystemsupport;
 
@@ -127,6 +132,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
         child = (LinearLayout) inflater.inflate(getItemLayoutId(), null, false);
         frame = (RelativeLayout) findViewById(R.id.base_frame);
+        mframeLayout = (FrameLayout) findViewById(R.id.frame_layout_now);
         childLayout = (ListView) findViewById(R.id.list);
         image_location = (ImageView) findViewById(R.id.image_src);
         text_view = (TextView) findViewById(R.id.secondlayertext);
@@ -139,7 +145,15 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             frame.getLayoutParams().height = cateb.getHeightWhole();
             frame.setBackgroundResource(R.drawable.normal_gradient);
             if (cateb.useFragment()) {
-
+                //Fragment myFrag = new ImageFragment();
+                if (cateb.getFTrans() != null) {
+                    cateb.getFTrans().add(mframeLayout.getId(), cateb.getCustomFragment(), "fragment" + cateb.getResId());
+                    cateb.getFTrans().commit();
+                } else {
+                    //   Fragment fra = cateb.getCustomFragment();
+                    //  cateb.getV4Trans().add(mframeLayout.getId(), fra, "fragment" + cateb.getResId());
+                    //  cateb.getV4Trans().commit();
+                }
             } else {
                 if (cateb.getResId() == 0) {
                     theloadingimagepicasso
@@ -151,7 +165,12 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 } else {
                     image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
                 }
+
             }
+
+            mframeLayout.setVisibility(cateb.useFragment() ? VISIBLE : GONE);
+            frame.setVisibility(cateb.useFragment() ? GONE : VISIBLE);
+
             if (cateb.getResLayoutSecondLayer() != 0 || !cateb.getTitleOnSecondLayer().equalsIgnoreCase("")) {
                 if (cateb.getResLayoutSecondLayer() == 0) {
                     text_view.setText(cateb.getTitleOnSecondLayer());
@@ -181,7 +200,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     private void init_listview() throws Exception {
         if (cateb.getPrimaryList().size() > 0) {
             //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
-
             listAdapter = new BasicListingAdapter(getContext(), getItemLayoutId(), cateb.getPrimaryList());
             childLayout.setAdapter(listAdapter);
 /*  int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);

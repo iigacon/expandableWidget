@@ -1,7 +1,9 @@
 package com.hb.hkm.hkmeexpandedview;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
@@ -32,6 +34,10 @@ public class CatelogViewBuilder {
 
     public CatelogView create() {
         return new CatelogView(mctx, this);
+    }
+
+    public Context getContext() {
+        return mctx;
     }
 
     public CatelogViewBuilder enableFBSpring(boolean b) {
@@ -105,14 +111,24 @@ public class CatelogViewBuilder {
     /**
      * fragment control display
      */
+    private FragmentActivity fcontext;
     private Fragment customFragment;
     private boolean useFragmentInstead = false;
 
-    public CatelogViewBuilder setHeaderFragment(Fragment fragment) {
+    public CatelogViewBuilder setHeaderFragment(Fragment fragment, FragmentActivity context) {
         useFragmentInstead = true;
         titleSecondLayer = "";
+        fcontext = context;
         customFragment = fragment;
         return this;
+    }
+
+    public android.support.v4.app.FragmentTransaction getV4Trans() {
+        return fcontext.getSupportFragmentManager().beginTransaction();
+    }
+
+    public FragmentTransaction getFTrans() {
+        return fcontext.getFragmentManager().beginTransaction();
     }
 
     public boolean useFragment() {
@@ -125,6 +141,7 @@ public class CatelogViewBuilder {
 
     /**
      * use custom style to override the default style
+     *
      * @param styleId
      * @return
      */
@@ -135,6 +152,7 @@ public class CatelogViewBuilder {
 
     /**
      * import data listing
+     *
      * @param str
      * @return
      */
@@ -149,6 +167,7 @@ public class CatelogViewBuilder {
 
     /**
      * set up the display title on the header section
+     *
      * @return
      */
     public String getTitleOnSecondLayer() {
@@ -161,6 +180,7 @@ public class CatelogViewBuilder {
 
     /**
      * using spring interactions
+     *
      * @return
      */
     public boolean hasSpring() {

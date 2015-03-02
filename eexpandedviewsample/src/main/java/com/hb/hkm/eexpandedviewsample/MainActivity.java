@@ -1,12 +1,15 @@
 package com.hb.hkm.eexpandedviewsample;
 
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
+import com.hb.hkm.eexpandedviewsample.fragmentdemo.ly;
 import com.hb.hkm.hkmeexpandedview.CatelogView;
 import com.hb.hkm.hkmeexpandedview.CatelogViewBuilder;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
@@ -38,24 +41,29 @@ public class MainActivity extends ActionBarActivity {
             "Luffy!",
             "O - Z!",
             "Zoro",
-            "Sixth"
+            "Sixth",
+            "Best Ass"
     };
 
     protected void example_2() throws Resources.NotFoundException, Exception {
         // final toggleWatcher tw = new toggleWatcher();
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
-        for (int i = 0; i < image_title.length; i++) {
+        for (int i = 0; i < ItemsTitle.length; i++) {
             ArrayList<BasicDataBind> bb = new ArrayList<BasicDataBind>();
             for (int h = 0; h < ItemsTitle.length; h++) {
                 bb.add(new BasicDataBind(ItemsTitle[h], "zxczx zxczxc"));
             }
             CatelogViewBuilder cb = new CatelogViewBuilder(this);
-            cb.preset_src(sample_images[i], getResources().getDimension(R.dimen.home_collapsed))
-                    .rndColor()
-                    .setImageTitle(image_title[i])
-                    .setDataList(bb);
-            // cb.setWatcher(tw);
+            if (i == 6) {
+                cb.setHeaderFragment(new ly(), this).setDataList(bb);
+            } else {
+                cb.preset_src(sample_images[i], getResources().getDimension(R.dimen.home_collapsed))
+                        .rndColor()
+                        .setImageTitle(image_title[i])
+                        .setDataList(bb);
+                // cb.setWatcher(tw);
+            }
             container.addView(cb.create());
         }
         // tw.addContainer(container);
@@ -130,12 +138,18 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.f1) {
             return true;
         }
-
+        if (id == R.id.f2) {
+            return true;
+        }
+        if (id == R.id.g) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/jjhesk/expandableWidget"));
+            startActivity(browserIntent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

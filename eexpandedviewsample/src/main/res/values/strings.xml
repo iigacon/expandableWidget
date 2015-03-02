@@ -2,5 +2,7 @@
     <string name="app_name">eexpandedviewSample</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_fork_me">Github</string>
+    <string name="action_example1_fragments">Example 1</string>
+    <string name="action_example2_fragments">Example 2</string>
 </resources>

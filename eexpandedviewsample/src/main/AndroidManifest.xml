@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:launchMode="singleTask"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,6 +17,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ex1"
+            android:label="@string/action_example1_fragments">
+
+        </activity>
+        <activity
+            android:name=".ex2"
+            android:label="@string/action_example2_fragments">
+
         </activity>
     </application>
 

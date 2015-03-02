@@ -8,6 +8,13 @@
         <include
             android:id="@+id/base_frame"
             layout="@layout/header" />
+        <!-- "Loaded" flash bar layout -->
+        <FrameLayout
+            android:id="@+id/frame_layout_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="72dp" />
 
         <View
             android:background="@drawable/down_shadow"

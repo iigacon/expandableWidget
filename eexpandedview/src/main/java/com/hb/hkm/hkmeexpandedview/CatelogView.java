@@ -160,11 +160,11 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             if (cateb.useFragment()) {
                 if (cateb.getFTrans() != null) {
                     //     if (T instanceof Fragment) {
-                    fragment = (Class<? extends Fragment>) cateb.getCustomFragment();
-                    cateb.getFTrans().add(mframeLayout.getId(), Class<E> fragment, "fragment" + cateb.getResId())
-                    ;
-                    cateb.getFTrans().commit();
-                    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
+                 //   fragment = (Class<? extends Fragment>) cateb.getCustomFragment();
+                 //   cateb.getFTrans().add(mframeLayout.getId(), Class<E> fragment, "fragment" + cateb.getResId())
+                 //   ;
+                 //   cateb.getFTrans().commit();
+                ///    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
 
 
                     //     mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));

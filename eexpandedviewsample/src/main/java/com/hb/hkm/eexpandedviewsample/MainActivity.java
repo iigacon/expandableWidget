@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
             }
             CatelogViewBuilder cb = new CatelogViewBuilder(this);
             if (i == 6) {
-                cb.setHeaderFragment(new ly(), this).setDataList(bb);
+                cb.setHeaderFragment(ly.newInstance("grsd sdf "), this).setDataList(bb).setFragmentHeight(R.dimen.home_collapsed);
             } else {
                 cb.preset_src(sample_images[i], getResources().getDimension(R.dimen.home_collapsed))
                         .rndColor()

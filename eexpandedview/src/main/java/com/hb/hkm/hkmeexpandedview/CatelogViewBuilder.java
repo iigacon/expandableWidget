@@ -13,13 +13,13 @@ import java.util.ArrayList;
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogViewBuilder {
+public class CatelogViewBuilder<T extends Fragment> {
     public enum CHILD_LAYOUT_TYPE {
         DEFAULT, ICON_TEXT, CUSTOM
     }
 
     private int resLayoutChildItem = 0, red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0, header_image_drawable_resId = 0;
-    private float collapsed_height;
+    private float collapsed_height = 100.0f;
     private ArrayList<BasicDataBind> list_source;
     private boolean spring_enable = false;
     private toggleWatcher watcher;
@@ -112,14 +112,19 @@ public class CatelogViewBuilder {
      * fragment control display
      */
     private FragmentActivity fcontext;
-    private Fragment customFragment;
+    private Class<T> customFragment;
     private boolean useFragmentInstead = false;
 
-    public CatelogViewBuilder setHeaderFragment(Fragment fragment, FragmentActivity context) {
+    public CatelogViewBuilder setHeaderFragment(Class<T> fragment, FragmentActivity context) {
         useFragmentInstead = true;
         titleSecondLayer = "";
         fcontext = context;
         customFragment = fragment;
+        return this;
+    }
+
+    public CatelogViewBuilder setFragmentHeight(int ResId) {
+        collapsed_height = mctx.getResources().getDimension(ResId);
         return this;
     }
 
@@ -135,7 +140,7 @@ public class CatelogViewBuilder {
         return useFragmentInstead;
     }
 
-    public Fragment getCustomFragment() {
+    public  Class<T> getCustomFragment() {
         return customFragment;
     }
 

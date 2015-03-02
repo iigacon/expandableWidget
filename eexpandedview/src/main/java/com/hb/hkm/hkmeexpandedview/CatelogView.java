@@ -42,6 +42,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     private static SpringSystem springSystem = SpringSystem.create();
     private LinearLayout.LayoutParams mCompressedParams;
     private LinearLayout.LayoutParams mExpandedParams;
+    private Class<? extends Fragment> fragment;
 
     public CatelogView(Context context) {
         this(context, null, 0);
@@ -138,21 +139,39 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         text_view = (TextView) findViewById(R.id.secondlayertext);
     }
 
+    public class FragmentWorkAround<T extends Fragment> {
+        Class<T> clazz;
+
+        public FragmentWorkAround(Class<T> clazz) {
+            this.clazz = clazz;
+        }
+
+        public Class<T> FragmentWorkAround() {
+            return this.clazz;
+        }
+    }
+
     private void init_header() throws Exception {
         if (cateb.getHeight() > 0f) {
             mCompressedParams = getParamsL(cateb.getHeightWhole());
             // frame.setLayoutParams(getParamsR(cateb.getHeightWhole()));
-            frame.getLayoutParams().height = cateb.getHeightWhole();
-            frame.setBackgroundResource(R.drawable.normal_gradient);
+
+            //Fragment myFrag = new ImageFragment();
             if (cateb.useFragment()) {
-                //Fragment myFrag = new ImageFragment();
                 if (cateb.getFTrans() != null) {
-                    cateb.getFTrans().add(mframeLayout.getId(), cateb.getCustomFragment(), "fragment" + cateb.getResId());
+                    //     if (T instanceof Fragment) {
+                    fragment = (Class<? extends Fragment>) cateb.getCustomFragment();
+                    cateb.getFTrans().add(mframeLayout.getId(), Class<E> fragment, "fragment" + cateb.getResId())
+                    ;
                     cateb.getFTrans().commit();
+                    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
+
+
+                    //     mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
                 } else {
-                    //   Fragment fra = cateb.getCustomFragment();
-                    //  cateb.getV4Trans().add(mframeLayout.getId(), fra, "fragment" + cateb.getResId());
-                    //  cateb.getV4Trans().commit();
+                    // Fragment fra = cateb.getCustomFragment();
+                    // cateb.getV4Trans().add(mframeLayout.getId(), fra, "fragment" + cateb.getResId());
+                    // cateb.getV4Trans().commit();
                 }
             } else {
                 if (cateb.getResId() == 0) {
@@ -165,7 +184,8 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 } else {
                     image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
                 }
-
+                frame.getLayoutParams().height = cateb.getHeightWhole();
+                frame.setBackgroundResource(R.drawable.normal_gradient);
             }
 
             mframeLayout.setVisibility(cateb.useFragment() ? VISIBLE : GONE);
@@ -223,6 +243,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             init_header();
             init_listview();
             init_spring();
+            requestLayout();
         } catch (Exception e) {
             e.printStackTrace();
         }

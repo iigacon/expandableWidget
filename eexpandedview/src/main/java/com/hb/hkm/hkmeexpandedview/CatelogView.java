@@ -36,13 +36,13 @@ import static com.hb.hkm.hkmeexpandedview.R.styleable;
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogView<T extends Fragment> extends LinearLayout implements View.OnClickListener, SpringListener {
+public class CatelogView extends LinearLayout implements View.OnClickListener, SpringListener {
     private static String TAG = ".CatelogView";
     // Create a system to run the physics loop for a set of springs.
     private static SpringSystem springSystem = SpringSystem.create();
     private LinearLayout.LayoutParams mCompressedParams;
     private LinearLayout.LayoutParams mExpandedParams;
-    private Fragment fragment;
+
 
     public CatelogView(Context context) {
         this(context, null, 0);
@@ -164,6 +164,7 @@ public class CatelogView<T extends Fragment> extends LinearLayout implements Vie
                     cateb.getFTrans().add(mframeLayout.getId(), cateb.getCustomFragment(), "fragment" + cateb.getResId());
                     //   ;
                     cateb.getFTrans().commit();
+                    cateb.getFTrans().show(cateb.getCustomFragment());
                     ///    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
                     mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
                 } else {

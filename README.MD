@@ -7,8 +7,9 @@ ABOUT
 ------
 If you have a need to have a UI component which can be add as a part of the container layout, you can programmatically adding fragment into the header. This way you can do more interactions anyhow you like.
 
-![image](art/device-2015-02-25-223905.png) ![image](art/device-view.png)
 ![image](art/device-2015-03-02-101454.png)
+
+![image](art/device-view.png)
 
 
 

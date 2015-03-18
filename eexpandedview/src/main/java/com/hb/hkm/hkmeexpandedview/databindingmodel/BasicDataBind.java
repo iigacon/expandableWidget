@@ -3,7 +3,7 @@ package com.hb.hkm.hkmeexpandedview.databindingmodel;
 /**
  * Created by hesk on 2/25/15.
  */
-public class BasicDataBind{
+public class BasicDataBind extends bindBase {
     protected String
             mlabel,
             murl;
@@ -16,7 +16,13 @@ public class BasicDataBind{
         murl = url;
     }
 
+    @Override
     public String label() {
+        return mlabel;
+    }
+
+    @Override
+    public String toString() {
         return mlabel;
     }
 

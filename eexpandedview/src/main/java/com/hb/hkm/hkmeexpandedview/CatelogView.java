@@ -1,11 +1,10 @@
 package com.hb.hkm.hkmeexpandedview;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -28,6 +27,7 @@ import com.facebook.rebound.SpringUtil;
 import com.hb.hkm.hkmeexpandedview.bindingholder.SlickHolder;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
+import com.hb.hkm.hkmeexpandedview.header.FeatureImage;
 import com.hb.hkm.hkmeexpandedview.list.BasicListingAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -63,6 +63,11 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         init(null);
     }
 
+    /**
+     * only called from using xml
+     *
+     * @param attrs
+     */
     private void init(AttributeSet attrs) {
         viewWidthHalf = this.getMeasuredWidth() / 2;
         viewHeightHalf = this.getMeasuredHeight() / 2;
@@ -95,13 +100,12 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     }
 
     private boolean mExpanded = false;
-    private ImageView image_location;
     private int
             resLayout = 0,
             color = 0,
             red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
     private String src_url = "";
-    private RelativeLayout frame;
+    //  private RelativeLayout frame;
     private LinearLayout layoutnow;
     private ListView childLayout;
     private TextView text_view;
@@ -122,7 +126,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         return new LinearLayout.LayoutParams(-1, h);
     }
 
-    final Picasso theloadingimagepicasso = Picasso.with(getContext());
 
     private int getItemLayoutId() {
         return resLayout == 0 ? cateb.getChildItemLayoutResId() : resLayout;
@@ -132,11 +135,10 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
         child = (LinearLayout) inflater.inflate(getItemLayoutId(), null, false);
-        frame = (RelativeLayout) findViewById(R.id.base_frame);
-        mframeLayout = (FrameLayout) findViewById(R.id.frame_layout_now);
+        mframeLayout = (FrameLayout) findViewById(R.id.container);
         childLayout = (ListView) findViewById(R.id.list);
-        image_location = (ImageView) findViewById(R.id.image_src);
-        text_view = (TextView) findViewById(R.id.secondlayertext);
+        // image_location = (ImageView) findViewById(R.id.image_src);
+        // text_view = (TextView) findViewById(R.id.secondlayertext);
     }
 
     public class FragmentWorkAround<T extends Fragment> {
@@ -151,56 +153,23 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         }
     }
 
+    private void setFragment(Fragment object) {
+        FragmentTransaction t = cateb.getFTrans();
+        t.add(mframeLayout.getId(), object);
+        t.commit();
+    }
+
     private void init_header() throws Exception {
+        mframeLayout.setBackgroundResource(R.drawable.normal_gradient);
         if (cateb.getHeight() > 0f) {
             mCompressedParams = getParamsL(cateb.getHeightWhole());
-            // frame.setLayoutParams(getParamsR(cateb.getHeightWhole()));
-
-            //Fragment myFrag = new ImageFragment();
+            mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
             if (cateb.useFragment()) {
-                if (cateb.getFTrans() != null) {
-                    //     if (T instanceof Fragment) {
-                    //  fragment = cateb.getCustomFragment();
-                    cateb.getFTrans().add(mframeLayout.getId(), cateb.getCustomFragment(), "fragment" + cateb.getResId());
-                    //   ;
-                    cateb.getFTrans().commit();
-                    cateb.getFTrans().show(cateb.getCustomFragment());
-                    ///    mframeLayout.getLayoutParams().height = cateb.getHeightWhole();
-                    mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
-                } else {
-                    // Fragment fra = cateb.getCustomFragment();
-                    // cateb.getV4Trans().add(mframeLayout.getId(), fra, "fragment" + cateb.getResId());
-                    // cateb.getV4Trans().commit();
-                }
+                // mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
+                setFragment(cateb.getCustomFragment());
             } else {
-                if (cateb.getResId() == 0) {
-                    theloadingimagepicasso
-                            .load(cateb.getBannerImageUrl())
-                            .fit().centerCrop()
-                            .placeholder(R.drawable.load)
-                            .error(R.drawable.load)
-                            .into(image_location);
-                } else {
-                    image_location.setImageDrawable(getResources().getDrawable(cateb.getResId()));
-                }
-                frame.getLayoutParams().height = cateb.getHeightWhole();
-                frame.setBackgroundResource(R.drawable.normal_gradient);
+                setFragment(FeatureImage.newInstance(cateb.getBannerImageUrl(), cateb.getTitleOnSecondLayer()));
             }
-
-            mframeLayout.setVisibility(cateb.useFragment() ? VISIBLE : GONE);
-            frame.setVisibility(cateb.useFragment() ? GONE : VISIBLE);
-
-            if (cateb.getResLayoutSecondLayer() != 0 || !cateb.getTitleOnSecondLayer().equalsIgnoreCase("")) {
-                if (cateb.getResLayoutSecondLayer() == 0) {
-                    text_view.setText(cateb.getTitleOnSecondLayer());
-                } else {
-                    text_view.setVisibility(GONE);
-                }
-            }
-            image_location.setVisibility(View.VISIBLE);
-            // image_location.setLayoutParams(mCompressedParams);
-            image_location.setOnClickListener(this);
-            // setLayoutParams(mCompressedParams);
         }
     }
 
@@ -216,16 +185,17 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         }
     }
 
+    /*  int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
+                        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY);
+                        child.measure(widthMeasureSpec, heightMeasureSpec);
+                        final int height = child.getMeasuredHeight() == 0 ? 400 : child.getMeasuredHeight();
+    */
     private void init_listview() throws Exception {
         if (cateb.getPrimaryList().size() > 0) {
             //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
             listAdapter = new BasicListingAdapter(getContext(), getItemLayoutId(), cateb.getPrimaryList());
             childLayout.setAdapter(listAdapter);
-/*  int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
-                    int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY);
-                    child.measure(widthMeasureSpec, heightMeasureSpec);
-                    final int height = child.getMeasuredHeight() == 0 ? 400 : child.getMeasuredHeight();
-*/
+
             final int height = 400;
             Log.d(TAG, "layout height: " + height);
             mExpandedParams = getParamsL((int) (height + cateb.getHeight()));
@@ -244,13 +214,13 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             init_spring();
             requestLayout();
         } catch (Exception e) {
-            e.printStackTrace();
+            //  e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         }
+
+
     }
 
-    public void setImageVisible(boolean visible) {
-        image_location.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
 
     private void changeLayout(LayoutParams l) {
         setLayoutParams(l);

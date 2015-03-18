@@ -25,16 +25,14 @@ public class ly extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_for, container, false);
-        introtext = ((TextView) v.findViewById(R.id.tvFragText));
-        introtext.setText(getArguments().getString("text"));
-        return v;
+        return inflater.inflate(R.layout.fragment_for, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-
+        introtext = ((TextView) view.findViewById(R.id.tvFragText));
+        // introtext.setText(getArguments().getString("text"));
+        // introtext.setText("eonfieo ioenf ");
     }
 
 }

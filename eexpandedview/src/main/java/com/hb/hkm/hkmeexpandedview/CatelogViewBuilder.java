@@ -1,73 +1,84 @@
 package com.hb.hkm.hkmeexpandedview;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 
 import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogViewBuilder<T extends Fragment> {
+public class CatelogViewBuilder<T extends Fragment> implements Serializable {
     public enum CHILD_LAYOUT_TYPE {
         DEFAULT, ICON_TEXT, CUSTOM
     }
 
-    private int resLayoutChildItem = 0, red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0, header_image_drawable_resId = 0;
-    private float collapsed_height = 100.0f;
-    private ArrayList<BasicDataBind> list_source;
-    private boolean spring_enable = false;
-    private toggleWatcher watcher;
-    private String imgurl = "";
-    protected Context mctx;
+    private static class dataholder {
+        private int resLayoutChildItem = 0, red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0, header_image_drawable_resId = 0;
+        private float collapsed_height = 100.0f;
+        private String imgurl = "";
+        private boolean spring_enable = false;
+        private int resLayoutSecondLayer = 0;
+        private int resStyleId = 0;
+        private String titleSecondLayer = "";
 
-    public CatelogViewBuilder(Context c) {
+    }
+
+
+    private dataholder datagroup = new dataholder();
+    private ArrayList<BasicDataBind> list_source;
+    private toggleWatcher watcher;
+
+    protected Activity activity_context;
+
+    public CatelogViewBuilder(Activity c) {
         setLayoutChildType(CHILD_LAYOUT_TYPE.DEFAULT);
         enableFBSpring(true);
-        mctx = c;
+        activity_context = c;
     }
 
     public CatelogView create() {
-        return new CatelogView(mctx, this);
+        return new CatelogView(activity_context, this);
     }
 
     public Context getContext() {
-        return mctx;
+        return activity_context;
     }
 
     public CatelogViewBuilder enableFBSpring(boolean b) {
-        spring_enable = b;
+        datagroup.spring_enable = b;
         return this;
     }
 
     public CatelogViewBuilder preset_src(String image_uri, float height) {
-        imgurl = image_uri;
-        header_image_drawable_resId = 0;
-        collapsed_height = height;
+        datagroup.imgurl = image_uri;
+        datagroup.header_image_drawable_resId = 0;
+        datagroup.collapsed_height = height;
         return this;
     }
 
     public CatelogViewBuilder preset_src(int src, float height) {
-        header_image_drawable_resId = src;
-        imgurl = "";
-        collapsed_height = height;
+        datagroup.header_image_drawable_resId = src;
+        datagroup.imgurl = "";
+        datagroup.collapsed_height = height;
         return this;
     }
 
     public CatelogViewBuilder rndColor() {
-        red = (int) (Math.random() * 128 + 127);
-        green = (int) (Math.random() * 128 + 127);
-        blue = (int) (Math.random() * 128 + 127);
+        datagroup.red = (int) (Math.random() * 128 + 127);
+        datagroup.green = (int) (Math.random() * 128 + 127);
+        datagroup.blue = (int) (Math.random() * 128 + 127);
         return this;
     }
 
     public CatelogViewBuilder setItemChildLayoutId(int resLayoutId) {
-        resLayoutChildItem = resLayoutId;
+        datagroup.resLayoutChildItem = resLayoutId;
         setLayoutChildType(CHILD_LAYOUT_TYPE.CUSTOM);
         return this;
     }
@@ -75,69 +86,64 @@ public class CatelogViewBuilder<T extends Fragment> {
     public CatelogViewBuilder setLayoutChildType(final CHILD_LAYOUT_TYPE res) {
         switch (res) {
             case DEFAULT:
-                resLayoutChildItem = R.layout.l_default;
+                datagroup.resLayoutChildItem = R.layout.l_default;
                 break;
             case ICON_TEXT:
-                resLayoutChildItem = R.layout.l_icon_text_c;
+                datagroup.resLayoutChildItem = R.layout.l_icon_text_c;
                 break;
             case CUSTOM:
                 break;
             default:
-                resLayoutChildItem = R.layout.l_default;
+                datagroup.resLayoutChildItem = R.layout.l_default;
                 break;
         }
         return this;
     }
 
-    private int resLayoutSecondLayer = 0;
-    private int resStyleId = 0;
-    private String titleSecondLayer = "";
 
     public CatelogViewBuilder setSecondLayerOnBanner(int resId) {
-        resLayoutSecondLayer = resId;
+        datagroup.resLayoutSecondLayer = resId;
         return this;
 
     }
 
     public int getResLayoutSecondLayer() {
-        return resLayoutSecondLayer;
+        return datagroup.resLayoutSecondLayer;
     }
 
     public CatelogViewBuilder setImageTitle(String content) {
-        titleSecondLayer = content;
+        datagroup.titleSecondLayer = content;
         return this;
     }
 
     /**
      * fragment control display
      */
-    private FragmentActivity fcontext;
-    private T customFragment;
-    private boolean useFragmentInstead = false;
 
-    public CatelogViewBuilder setHeaderFragment(T fragment, FragmentActivity context) {
-        useFragmentInstead = true;
-        titleSecondLayer = "";
-        fcontext = context;
+    private T customFragment;
+    private boolean isUsingCustomFragment = false;
+
+
+    public CatelogViewBuilder setHeaderFragment(T fragment) {
+        isUsingCustomFragment = true;
+        datagroup.titleSecondLayer = "";
         customFragment = fragment;
         return this;
     }
 
     public CatelogViewBuilder setFragmentHeight(int ResId) {
-        collapsed_height = mctx.getResources().getDimension(ResId);
+        datagroup.collapsed_height = activity_context.getResources().getDimension(ResId);
         return this;
     }
 
-    public android.support.v4.app.FragmentTransaction getV4Trans() {
-        return fcontext.getSupportFragmentManager().beginTransaction();
-    }
-
     public FragmentTransaction getFTrans() {
-        return fcontext.getFragmentManager().beginTransaction();
+        return activity_context
+                .getFragmentManager()
+                .beginTransaction();
     }
 
     public boolean useFragment() {
-        return useFragmentInstead;
+        return isUsingCustomFragment;
     }
 
     public T getCustomFragment() {
@@ -151,7 +157,7 @@ public class CatelogViewBuilder<T extends Fragment> {
      * @return
      */
     public CatelogViewBuilder withCustomStyle(int styleId) {
-        resStyleId = styleId;
+        datagroup.resStyleId = styleId;
         return this;
     }
 
@@ -176,11 +182,11 @@ public class CatelogViewBuilder<T extends Fragment> {
      * @return
      */
     public String getTitleOnSecondLayer() {
-        return titleSecondLayer;
+        return datagroup.titleSecondLayer;
     }
 
     public int getChildItemLayoutResId() {
-        return resLayoutChildItem;
+        return datagroup.resLayoutChildItem;
     }
 
     /**
@@ -189,27 +195,31 @@ public class CatelogViewBuilder<T extends Fragment> {
      * @return
      */
     public boolean hasSpring() {
-        return spring_enable;
+        return datagroup.spring_enable;
     }
 
     public int getResId() {
-        return header_image_drawable_resId;
+        return datagroup.header_image_drawable_resId;
+    }
+
+    public boolean useImageURI() {
+        return !datagroup.imgurl.equalsIgnoreCase("");
     }
 
     public String getBannerImageUrl() {
-        return imgurl;
+        return datagroup.imgurl;
     }
 
     public float getHeight() {
-        return collapsed_height;
+        return datagroup.collapsed_height;
     }
 
     public int getHeightWhole() {
-        return (int) collapsed_height;
+        return (int) datagroup.collapsed_height;
     }
 
     public int getColor() {
-        return 0xff << 24 | (red << 16) | (green << 8) | blue;
+        return 0xff << 24 | (datagroup.red << 16) | (datagroup.green << 8) | datagroup.blue;
     }
 
     public CatelogViewBuilder setWatcher(toggleWatcher t) {
@@ -223,5 +233,14 @@ public class CatelogViewBuilder<T extends Fragment> {
 
     public void notifyWatcher(CatelogView view) {
         watcher.onSelect(view);
+    }
+
+
+    public String toJSON() {
+        return "";
+    }
+
+    public void fromJSON(String setting) {
+
     }
 }

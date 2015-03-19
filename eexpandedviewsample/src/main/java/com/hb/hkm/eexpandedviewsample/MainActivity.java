@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.hb.hkm.eexpandedviewsample.fragmentdemo.ly;
-import com.hb.hkm.hkmeexpandedview.CatelogView;
 import com.hb.hkm.hkmeexpandedview.CatelogViewBuilder;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
 import com.hb.hkm.hkmeexpandedview.toggleWatcher;
@@ -50,11 +49,11 @@ public class MainActivity extends ActionBarActivity {
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
         for (int i = 0; i < ItemsTitle.length; i++) {
-            ArrayList<BasicDataBind> bb = new ArrayList<BasicDataBind>();
+            ArrayList<BasicDataBind> bb = new ArrayList<>();
             for (int h = 0; h < ItemsTitle.length; h++) {
                 bb.add(new BasicDataBind(ItemsTitle[h], "zxczx zxczxc"));
             }
-            CatelogViewBuilder cb = new CatelogViewBuilder(this);
+            final CatelogViewBuilder cb = new CatelogViewBuilder(this);
             if (i == 6) {
                 cb
                         .setHeaderFragment(new ly())

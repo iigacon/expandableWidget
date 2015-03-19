@@ -4,17 +4,13 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,12 +20,9 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-import com.hb.hkm.hkmeexpandedview.bindingholder.SlickHolder;
 import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
 import com.hb.hkm.hkmeexpandedview.header.FeatureImage;
 import com.hb.hkm.hkmeexpandedview.list.BasicListingAdapter;
-import com.squareup.picasso.Picasso;
 
 import static com.hb.hkm.hkmeexpandedview.R.styleable;
 
@@ -43,6 +36,23 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     private LinearLayout.LayoutParams mCompressedParams;
     private LinearLayout.LayoutParams mExpandedParams;
 
+
+    private boolean mExpanded = false;
+    private int
+            resLayout = 0,
+            color = 0,
+            red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
+    private String src_url = "";
+    //  private RelativeLayout frame;
+    private LinearLayout layoutnow;
+    private ListView childLayout;
+    private TextView text_view;
+    private CatelogViewBuilder cateb;
+    private ArrayAdapter<BasicDataBind> listAdapter;
+    private LinearLayout child;
+    private FrameLayout mframeLayout;
+    private Spring spring;
+    private SpringSupport springSystemsupport;
 
     public CatelogView(Context context) {
         this(context, null, 0);
@@ -99,23 +109,6 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         init();
     }
 
-    private boolean mExpanded = false;
-    private int
-            resLayout = 0,
-            color = 0,
-            red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
-    private String src_url = "";
-    //  private RelativeLayout frame;
-    private LinearLayout layoutnow;
-    private ListView childLayout;
-    private TextView text_view;
-    private CatelogViewBuilder cateb;
-    private ArrayAdapter<BasicDataBind> listAdapter;
-    private LinearLayout child;
-    private FrameLayout mframeLayout;
-    private Spring spring;
-    private SpringSupport springSystemsupport;
-
     private RelativeLayout.LayoutParams getParamsR(int h) {
         // RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, h);
         // params.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -135,23 +128,12 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
         child = (LinearLayout) inflater.inflate(getItemLayoutId(), null, false);
-        mframeLayout = (FrameLayout) findViewById(R.id.container);
-        childLayout = (ListView) findViewById(R.id.list);
+        mframeLayout = (FrameLayout) layoutnow.findViewById(R.id.conframer);
+        childLayout = (ListView) layoutnow.findViewById(R.id.list);
         // image_location = (ImageView) findViewById(R.id.image_src);
         // text_view = (TextView) findViewById(R.id.secondlayertext);
     }
 
-    public class FragmentWorkAround<T extends Fragment> {
-        Class<T> clazz;
-
-        public FragmentWorkAround(Class<T> clazz) {
-            this.clazz = clazz;
-        }
-
-        public Class<T> FragmentWorkAround() {
-            return this.clazz;
-        }
-    }
 
     private void setFragment(Fragment object) {
         FragmentTransaction t = cateb.getFTrans();
@@ -160,7 +142,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     }
 
     private void init_header() throws Exception {
-        mframeLayout.setBackgroundResource(R.drawable.normal_gradient);
+
         if (cateb.getHeight() > 0f) {
             mCompressedParams = getParamsL(cateb.getHeightWhole());
             mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
@@ -169,6 +151,8 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
                 setFragment(cateb.getCustomFragment());
             } else {
                 setFragment(FeatureImage.newInstance(cateb.getBannerImageUrl(), cateb.getTitleOnSecondLayer()));
+                mframeLayout.setBackgroundResource(R.drawable.normal_gradient);
+
             }
         }
     }
@@ -186,10 +170,11 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
     }
 
     /*  int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
-                        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY);
-                        child.measure(widthMeasureSpec, heightMeasureSpec);
-                        final int height = child.getMeasuredHeight() == 0 ? 400 : child.getMeasuredHeight();
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY);
+        child.measure(widthMeasureSpec, heightMeasureSpec);
+        final int height = child.getMeasuredHeight() == 0 ? 400 : child.getMeasuredHeight();
     */
+
     private void init_listview() throws Exception {
         if (cateb.getPrimaryList().size() > 0) {
             //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
@@ -218,9 +203,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             Log.d(TAG, e.getMessage());
         }
 
-
     }
-
 
     private void changeLayout(LayoutParams l) {
         setLayoutParams(l);

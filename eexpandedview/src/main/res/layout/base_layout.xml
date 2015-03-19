@@ -7,13 +7,13 @@
                 layout="@layout/header" />-->
     <!-- "Loaded" flash bar layout -->
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/conframer"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="top" />
 
     <ListView
-        android:layout_below="@id/container"
+        android:layout_below="@id/conframer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list" />
@@ -21,6 +21,6 @@
     <View
         android:background="@drawable/down_shadow"
         android:layout_width="match_parent"
-        android:layout_below="@id/container"
+        android:layout_below="@id/conframer"
         android:layout_height="10dp" />
 </RelativeLayout>

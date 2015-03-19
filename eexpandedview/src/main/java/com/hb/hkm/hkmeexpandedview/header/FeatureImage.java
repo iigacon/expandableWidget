@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hb.hkm.hkmeexpandedview.CatelogViewBuilder;
 import com.hb.hkm.hkmeexpandedview.R;
 import com.squareup.picasso.Picasso;
 
@@ -18,7 +17,7 @@ import com.squareup.picasso.Picasso;
  * Created by hesk on 3/18/2015.
  */
 @SuppressLint("ValidFragment")
-public class FeatureImage extends Fragment implements OnImageClick {
+public class FeatureImage extends Fragment {
     public static String DESCRIBABLE_KEY = "CatelogViewBuilder";
     public static String URL = "FeatureImage.URL";
     public static String CAPTION = "FeatureImage.CAPTION";
@@ -42,7 +41,9 @@ public class FeatureImage extends Fragment implements OnImageClick {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.header, container, false);
     }
+
     private TextView introtext;
+    private FragmentInterface controlSPAN;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -58,13 +59,13 @@ public class FeatureImage extends Fragment implements OnImageClick {
                 .into(image_location);
         introtext.setText(b.getString(CAPTION));
 
-        //  image_location.setVisibility(View.VISIBLE);
-        //  image_location.setLayoutParams(mCompressedParams);
-        //  image_location.setOnClickListener(this);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (controlSPAN != null) controlSPAN.openStack();
+            }
+        });
+
     }
 
-    @Override
-    public void ImageOnClick() {
-
-    }
 }

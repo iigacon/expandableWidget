@@ -21,14 +21,8 @@ If you have a need to have a UI component which can be add as a part of the cont
 
 <img src="https://raw.github.com/jjhesk/expandableWidget/master/art/device-2015-03-02-101454.png" alt="screenshot" width="300px" height="auto" />
 <img src="https://raw.github.com/jjhesk/expandableWidget/master/art/device-view.png" alt="screenshot" width="300px" height="auto" />
-CUSTOMIZATION FOR STANDALONE HARDCODE IMPLEMENATION
-------
-```xml
 
-
-```
-
-USAGE BY HARD CODE
+XML usage
 ------
 
 ```xml

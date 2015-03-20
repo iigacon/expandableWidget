@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<include
-                android:id="@+id/base_frame"
-                layout="@layout/header" />-->
-    <!-- "Loaded" flash bar layout -->
+
     <FrameLayout
-        android:id="@+id/conframer"
+
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="top" />
 
-    <!--
-
-    <fragment
-         android:id="@+id/frag"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content" />
-
-         -->
-
-    <ListView
-        android:layout_below="@id/conframer"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/list" />
+        android:layout_height="wrap_content">
 
-    <View
-        android:background="@drawable/down_shadow"
-        android:layout_width="match_parent"
-        android:layout_below="@id/conframer"
-        android:layout_height="10dp" />
-</merge>
+        <ListView
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@android:id/list" />
+
+        <View
+            android:layout_alignParentTop="true"
+            android:background="@drawable/down_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+    </RelativeLayout>
+
+</LinearLayout>

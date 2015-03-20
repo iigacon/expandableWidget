@@ -1,14 +1,17 @@
-package com.hb.hkm.hkmeexpandedview;
+package hkm.ui.expendablefragment;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -20,23 +23,26 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
-import com.hb.hkm.hkmeexpandedview.header.FeatureImage;
-import com.hb.hkm.hkmeexpandedview.list.BasicListingAdapter;
+import com.hb.hkm.hkmeexpandedview.R;
+
+import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
+import hkm.ui.expendablefragment.header.FeatureImage;
+import hkm.ui.expendablefragment.header.FragmentInterface;
+import hkm.ui.expendablefragment.list.BasicListingAdapter;
 
 import static com.hb.hkm.hkmeexpandedview.R.styleable;
 
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogView extends RelativeLayout implements View.OnClickListener, SpringListener {
+public class CatelogView<T extends Fragment & FragmentClickable> extends LinearLayout implements View.OnClickListener, SpringListener, FragmentInterface {
     private static String TAG = ".CatelogView";
     // Create a system to run the physics loop for a set of springs.
     private static SpringSystem springSystem = SpringSystem.create();
-    //  private LinearLayout.LayoutParams mCompressedParams;
-    private RelativeLayout.LayoutParams mCompressedParams;
-    // private LinearLayout.LayoutParams mExpandedParams;
-    private RelativeLayout.LayoutParams mExpandedParams;
+    private LinearLayout.LayoutParams mCompressedParams;
+    // private RelativeLayout.LayoutParams mCompressedParams;
+    private LinearLayout.LayoutParams mExpandedParams;
+    // private RelativeLayout.LayoutParams mExpandedParams;
     private static int ViewId = 0;
 
     private boolean mExpanded = false;
@@ -46,7 +52,7 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
             red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
     private String src_url = "";
     //  private RelativeLayout frame;
-    private View layoutnow;
+
     private ListView childLayout;
     private TextView text_view;
     private CatelogViewBuilder cateb;
@@ -55,9 +61,11 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
     private FrameLayout mframeLayout;
     private Spring spring;
     private SpringSupport springSystemsupport;
+    private int headerFrameId;
 
     public CatelogView(Context context) {
         this(context, null, 0);
+
     }
 
     public CatelogView(Context context, AttributeSet attrs) {
@@ -81,6 +89,7 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
      * @param attrs
      */
     private void init(AttributeSet attrs) {
+
         viewWidthHalf = this.getMeasuredWidth() / 2;
         viewHeightHalf = this.getMeasuredHeight() / 2;
         int radius = 0;
@@ -121,42 +130,69 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
         return new LinearLayout.LayoutParams(-1, h);
     }
 
-    private int getItemLayoutId() {
+    private int getCustomInflatLayoutXMLid() {
         return resLayout == 0 ? cateb.getChildItemLayoutResId() : resLayout;
     }
 
+    private ViewGroup layoutnow;
+    private View shadow;
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void inflate() {
+        headerFrameId = getRootView().generateViewId();
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutnow = inflater.inflate(R.layout.base_layout, this, true);
-        child = (LinearLayout) inflater.inflate(getItemLayoutId(), null, false);
-        mframeLayout = (FrameLayout) layoutnow.findViewById(R.id.conframer);
-        childLayout = (ListView) layoutnow.findViewById(R.id.list);
+        layoutnow = (ViewGroup) inflater.inflate(R.layout.base_layout, this, true);
+        child = (LinearLayout) inflater.inflate(getCustomInflatLayoutXMLid(), null, false);
+        LinearLayout h = (LinearLayout) layoutnow.getChildAt(0);
+        mframeLayout = (FrameLayout) h.getChildAt(0);
+        mframeLayout.setId(headerFrameId);
+        childLayout = (ListView) layoutnow.findViewById(android.R.id.list);
+        RelativeLayout n = (RelativeLayout) h.getChildAt(1);
+        shadow = (View) n.getChildAt(1);
+
     }
 
     private void setFragment(Fragment object, String tag) {
         ViewId++;
         FragmentTransaction t = cateb.getFTrans();
         Log.d(TAG, "view ID: " + mframeLayout.getId());
-        t.add(mframeLayout.getId(), object, tag + ViewId);
+        t.add(headerFrameId, object, tag + ViewId);
         t.commit();
     }
 
     private void init_header() throws Exception {
 
+        if (cateb.getContainerData().shadowdrawable > 0) {
+            shadow.setBackgroundResource(cateb.getContainerData().shadowdrawable);
+        }
+
+        if (cateb.getContainerData().shadowheight > 0) {
+            shadow.setLayoutParams(getParamsL(cateb.getContainerData().shadowheight));
+        }
+
+        if (cateb.getContainerData().shadowheight == CatelogViewBuilder.NOSHADOW) {
+            shadow.setVisibility(GONE);
+        }
+
         if (cateb.getHeight() > 0f) {
             //  mCompressedParams = getParamsL(cateb.getHeightWhole());
-            mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
+            mframeLayout.setLayoutParams(getParamsL(cateb.getHeightWhole()));
             if (cateb.useFragment()) {
-                // mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
-                setFragment(cateb.getCustomFragment(), "CUSTOM");
+                setFragment(getCustomerFragmentInit(), "CUSTOM");
             } else {
-                setFragment(FeatureImage.newInstance(cateb.getBannerImageUrl(),
-                                cateb.getTitleOnSecondLayer()),
-                        "DEFAULT");
+                setFragment(FeatureImage.newInstance(
+                        cateb.getBannerImageUrl(),
+                        cateb.getTitleOnSecondLayer(),
+                        this), "DEFAULT");
                 mframeLayout.setBackgroundResource(R.drawable.normal_gradient);
-
             }
         }
+    }
+
+    private Fragment getCustomerFragmentInit() throws IllegalAccessException, InstantiationException {
+        T name = (T) cateb.getCustomFragment().newInstance();
+        name.setFragmentOnClickListener(this);
+        return name;
     }
 
     private void init_spring() throws Exception {
@@ -167,26 +203,30 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
             spring.addListener(this);
             // Set the spring in motion; moving from 0 to 1
             spring.setEndValue(0);
+            // -------------------------------------- \\
             Log.d(TAG, "ID:" + spring.getId());
+            // -------------------------------------- \\
         }
     }
 
-    /*  int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
-        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0,MeasureSpec.EXACTLY);
+    /*
+
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
         child.measure(widthMeasureSpec, heightMeasureSpec);
         final int height = child.getMeasuredHeight() == 0 ? 400 : child.getMeasuredHeight();
+
     */
 
     private void init_listview() throws Exception {
         if (cateb.getPrimaryList().size() > 0) {
-            //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
-            listAdapter = new BasicListingAdapter(getContext(), getItemLayoutId(), cateb.getPrimaryList());
-            childLayout.setAdapter(listAdapter);
-
             final int height = 400;
-            Log.d(TAG, "layout height: " + height);
-            mExpandedParams = getParamsR((int) (height + cateb.getHeight()));
+            //  TextView tvc = (TextView) child.findViewById(R.id.label_field);
+            listAdapter = new BasicListingAdapter(getContext(), getCustomInflatLayoutXMLid(), cateb.getPrimaryList());
+            childLayout.setAdapter(listAdapter);
+            mExpandedParams = getParamsL((int) (height + cateb.getHeight()));
             springSystemsupport = new SpringSupport(height, (int) cateb.getHeight());
+            Log.d(TAG, "layout height: " + height);
         }
     }
 
@@ -195,20 +235,15 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
         setGravity(Gravity.TOP);
         setBackgroundColor(color == 0 ? cateb.getColor() == 0 ? 0 : cateb.getColor() : color);
         try {
-
-
             inflate();
             init_header();
             init_listview();
             init_spring();
             requestLayout();
-
-
         } catch (Exception e) {
             //  e.printStackTrace();
             Log.d(TAG, e.getMessage());
         }
-
     }
 
     private void changeLayout(LayoutParams l) {
@@ -219,7 +254,7 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
     public void triggerClose() {
         if (mExpanded) {
             if (cateb.hasSpring()) {
-                // if (spring.isAtRest())
+                //if (spring.isAtRest())
                 spring.setEndValue(0);
                 Log.d(toggleWatcher.TAG, "Trigger Spring Operation: " + springSystemsupport.getFcompressed() + " at rest?" + spring.isAtRest() + " id:" + spring.getId());
             } else {
@@ -227,11 +262,10 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
                 changeLayout(mCompressedParams);
             }
         }
-        //        Log.d(toggleWatcher.TAG, "child item current state: " + mExpanded);
+        //  Log.d(toggleWatcher.TAG, "child item current state: " + mExpanded);
     }
 
-    @Override
-    public void onClick(View v) {
+    private void perform_expand_view_action() {
         if (cateb.hasSpring()) {
             if (spring.isAtRest()) {
                 //  boolean f = !mExpanded;
@@ -247,6 +281,26 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
         if (cateb.hasWatcher()) {
             cateb.notifyWatcher(this);
         }
+    }
+
+    @Override
+    public void openStack() {
+
+    }
+
+    @Override
+    public void closeStack() {
+
+    }
+
+    @Override
+    public void toggleStack() {
+        perform_expand_view_action();
+    }
+
+    @Override
+    public void onClick(View v) {
+        perform_expand_view_action();
     }
 
     @Override
@@ -271,10 +325,9 @@ public class CatelogView extends RelativeLayout implements View.OnClickListener,
             float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(S.getCurrentValue(),
                     0, 1, springSystemsupport.getFcompressed(), springSystemsupport.getFHeight()
             );
-            changeLayout(getParamsR((int) mappedValue));
+            changeLayout(getParamsL((int) mappedValue));
         }
-
-        //   myView.setScaleX(scale);
-        //    myView.setScaleY(scale);
+        // myView.setScaleX(scale);
+        // myView.setScaleY(scale);
     }
 }

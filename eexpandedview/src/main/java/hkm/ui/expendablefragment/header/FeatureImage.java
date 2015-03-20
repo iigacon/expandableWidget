@@ -1,4 +1,4 @@
-package com.hb.hkm.hkmeexpandedview.header;
+package hkm.ui.expendablefragment.header;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -21,29 +21,33 @@ public class FeatureImage extends Fragment {
     public static String DESCRIBABLE_KEY = "CatelogViewBuilder";
     public static String URL = "FeatureImage.URL";
     public static String CAPTION = "FeatureImage.CAPTION";
+    private TextView introtext;
+    private FragmentInterface controlSPAN;
 
     public FeatureImage() {
 
     }
 
-    public static FeatureImage newInstance(String image_url, String caption) {
+    public FeatureImage setFragmentListener(FragmentInterface listen) {
+        controlSPAN = listen;
+        return this;
+    }
+
+    public static FeatureImage newInstance(String image_url, String caption, FragmentInterface g) {
         FeatureImage fragment = new FeatureImage();
         Bundle bundle = new Bundle();
         // bundle.putSerializable(DESCRIBABLE_KEY, describable);
         bundle.putString(URL, image_url);
         bundle.putString(CAPTION, caption);
-        fragment.setArguments(bundle);
+        fragment.setFragmentListener(g).setArguments(bundle);
         return fragment;
     }
 
     //http://www.developerphil.com/parcelable-vs-serializable/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.header, container, false);
+        return inflater.inflate(R.layout.header, null, false);
     }
-
-    private TextView introtext;
-    private FragmentInterface controlSPAN;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -62,7 +66,7 @@ public class FeatureImage extends Fragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (controlSPAN != null) controlSPAN.openStack();
+                if (controlSPAN != null) controlSPAN.toggleStack();
             }
         });
 

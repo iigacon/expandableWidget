@@ -10,9 +10,9 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.hb.hkm.eexpandedviewsample.fragmentdemo.ly;
-import com.hb.hkm.hkmeexpandedview.CatelogViewBuilder;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
-import com.hb.hkm.hkmeexpandedview.toggleWatcher;
+import hkm.ui.expendablefragment.CatelogViewBuilder;
+import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
+import hkm.ui.expendablefragment.toggleWatcher;
 
 import java.util.ArrayList;
 
@@ -48,27 +48,27 @@ public class MainActivity extends ActionBarActivity {
         // final toggleWatcher tw = new toggleWatcher();
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
-        // int len = ItemsTitle.length;
-        int len = 4;
+        int len = ItemsTitle.length;
+        //int len = 4;
         for (int i = 0; i < len; i++) {
             ArrayList<BasicDataBind> bb = new ArrayList<>();
             for (int h = 0; h < len; h++) {
                 bb.add(new BasicDataBind(ItemsTitle[h], "zxczx zxczxc"));
             }
-            final CatelogViewBuilder cb = new CatelogViewBuilder(this);
-            if (i == 2) {
+            CatelogViewBuilder cb = new CatelogViewBuilder(this);
+            if (i == 5) {
                 cb
-                        .setHeaderFragment(new ly())
+                        .setHeaderFragment(ly.class)
                         .setDataList(bb)
                         .setFragmentHeight(R.dimen.home_collapsed);
-            } else {
+            } else
                 cb
                         .preset_src(sample_images[i], getResources().getDimension(R.dimen.home_collapsed))
                         .rndColor()
                         .setImageTitle(image_title[i])
                         .setDataList(bb);
-                // cb.setWatcher(tw);
-            }
+            // cb.setWatcher(tw);
+
             container.addView(cb.create());
         }
         // tw.addContainer(container);

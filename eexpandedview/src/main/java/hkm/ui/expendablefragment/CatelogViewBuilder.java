@@ -1,12 +1,13 @@
-package com.hb.hkm.hkmeexpandedview;
+package hkm.ui.expendablefragment;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 
-import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
+import com.hb.hkm.hkmeexpandedview.R;
+
+import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,20 +15,24 @@ import java.util.ArrayList;
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogViewBuilder<T extends Fragment> implements Serializable {
+public class CatelogViewBuilder<T extends Fragment & FragmentClickable> implements Serializable {
     public enum CHILD_LAYOUT_TYPE {
         DEFAULT, ICON_TEXT, CUSTOM
     }
 
-    private static class dataholder {
-        private int resLayoutChildItem = 0, red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0, header_image_drawable_resId = 0;
-        private float collapsed_height = 100.0f;
-        private String imgurl = "";
-        private boolean spring_enable = false;
-        private int resLayoutSecondLayer = 0;
-        private int resStyleId = 0;
-        private String titleSecondLayer = "";
+    public static int NOSHADOW = -1;
+    public static int NOSETTING = 0;
 
+    public static class dataholder {
+        public int resLayoutChildItem = NOSETTING, red = NOSETTING, green = NOSETTING, blue = NOSETTING, viewHeightHalf = 0, viewWidthHalf = 0, header_image_drawable_resId = 0;
+        public float collapsed_height = 100.0f;
+        public String imgurl = "";
+        public boolean spring_enable = false;
+        public int resLayoutSecondLayer = NOSETTING;
+        public int resStyleId = NOSETTING;
+        public int shadowdrawable = NOSETTING;
+        public String titleSecondLayer = "";
+        public int shadowheight = NOSETTING;
     }
 
 
@@ -119,17 +124,20 @@ public class CatelogViewBuilder<T extends Fragment> implements Serializable {
     /**
      * fragment control display
      */
-
-    private T customFragment;
+    private Class<T> customFragment;
     private boolean isUsingCustomFragment = false;
 
-
-    public CatelogViewBuilder setHeaderFragment(T fragment) {
+    public CatelogViewBuilder setHeaderFragment(Class<T> clazz) {
         isUsingCustomFragment = true;
         datagroup.titleSecondLayer = "";
-        customFragment = fragment;
+        customFragment = clazz;
         return this;
     }
+
+   /* @Override
+    public <T extends Fragment & FragmentClickable> T createFragment(Class<T> clazz) throws IllegalAccessException, InstantiationException {
+        return clazz.newInstance();
+    }*/
 
     public CatelogViewBuilder setFragmentHeight(int ResId) {
         datagroup.collapsed_height = activity_context.getResources().getDimension(ResId);
@@ -146,7 +154,7 @@ public class CatelogViewBuilder<T extends Fragment> implements Serializable {
         return isUsingCustomFragment;
     }
 
-    public T getCustomFragment() {
+    public Class<T> getCustomFragment() {
         return customFragment;
     }
 
@@ -159,6 +167,26 @@ public class CatelogViewBuilder<T extends Fragment> implements Serializable {
     public CatelogViewBuilder withCustomStyle(int styleId) {
         datagroup.resStyleId = styleId;
         return this;
+    }
+
+    /**
+     * setup the shadow drawable ID
+     *
+     * @param resId
+     * @return
+     */
+    public CatelogViewBuilder setShadowDrawable(int resId) {
+        datagroup.shadowdrawable = resId;
+        return this;
+    }
+
+    /**
+     * to retrieve the datagroup data
+     *
+     * @return
+     */
+    public dataholder getContainerData() {
+        return datagroup;
     }
 
     /**

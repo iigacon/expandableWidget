@@ -1,16 +1,15 @@
-package com.hb.hkm.hkmeexpandedview.list;
+package hkm.ui.expendablefragment.list;
 
 import android.content.Context;
 
 import com.hb.hkm.hkmeexpandedview.R;
-import com.hb.hkm.hkmeexpandedview.bindingholder.SlickHolder;
-import com.hb.hkm.hkmeexpandedview.bindingholder.basicViewHolder;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.SlickBind;
+import hkm.ui.expendablefragment.bindingholder.SlickHolder;
+import hkm.ui.expendablefragment.bindingholder.basicViewHolder;
+import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
+import hkm.ui.expendablefragment.databindingmodel.SlickBind;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by hesk on 2/27/2015.

@@ -1,4 +1,4 @@
-package com.hb.hkm.hkmeexpandedview.databindingmodel;
+package hkm.ui.expendablefragment.databindingmodel;
 
 /**
  * Created by hesk on 3/18/2015.

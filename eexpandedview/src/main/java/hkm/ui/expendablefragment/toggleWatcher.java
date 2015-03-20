@@ -1,6 +1,5 @@
-package com.hb.hkm.hkmeexpandedview;
+package hkm.ui.expendablefragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 

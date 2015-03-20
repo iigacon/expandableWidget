@@ -1,4 +1,4 @@
-package com.hb.hkm.hkmeexpandedview.bindingholder;
+package hkm.ui.expendablefragment.bindingholder;
 
 import android.view.View;
 import android.widget.ImageView;

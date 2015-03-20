@@ -1,4 +1,4 @@
-package com.hb.hkm.hkmeexpandedview;
+package hkm.ui.expendablefragment;
 
 /**
  * Created by hesk on 2/26/2015.

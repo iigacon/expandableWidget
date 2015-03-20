@@ -1,4 +1,4 @@
-package com.hb.hkm.hkmeexpandedview.list;
+package hkm.ui.expendablefragment.list;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,10 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.hb.hkm.hkmeexpandedview.bindingholder.basicViewHolder;
-import com.hb.hkm.hkmeexpandedview.databindingmodel.BasicDataBind;
+import hkm.ui.expendablefragment.bindingholder.basicViewHolder;
+import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

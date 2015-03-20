@@ -2,6 +2,18 @@ Expandable Catelog View [![API](https://img.shields.io/badge/API-17%2B-brightgre
 ========
 The java library to delivery slick nice expandable widget view. FB Spring Featured Widget.
 
+GET
+------
+Stay for our [release note](https://github.com/jjhesk/expandableWidget/releases)
+
+Gradle
+------
+
+```gradle
+dependencies{
+compile ''
+}
+```
 
 ABOUT
 ------
@@ -15,15 +27,6 @@ CUSTOMIZATION FOR STANDALONE HARDCODE IMPLEMENATION
 
 
 ```
-
-
-GRADLE COMING SOON
-------
-
-```gradle
-
-```
-
 
 USAGE BY HARD CODE
 ------

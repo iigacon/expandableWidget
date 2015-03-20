@@ -48,13 +48,15 @@ public class MainActivity extends ActionBarActivity {
         // final toggleWatcher tw = new toggleWatcher();
         final LinearLayout container = (LinearLayout) findViewById(R.id.expanded_menu_list);
         // Start with two views
-        for (int i = 0; i < ItemsTitle.length; i++) {
+        // int len = ItemsTitle.length;
+        int len = 4;
+        for (int i = 0; i < len; i++) {
             ArrayList<BasicDataBind> bb = new ArrayList<>();
-            for (int h = 0; h < ItemsTitle.length; h++) {
+            for (int h = 0; h < len; h++) {
                 bb.add(new BasicDataBind(ItemsTitle[h], "zxczx zxczxc"));
             }
             final CatelogViewBuilder cb = new CatelogViewBuilder(this);
-            if (i == 6) {
+            if (i == 2) {
                 cb
                         .setHeaderFragment(new ly())
                         .setDataList(bb)

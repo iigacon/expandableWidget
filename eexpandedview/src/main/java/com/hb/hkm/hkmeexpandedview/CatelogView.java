@@ -29,13 +29,15 @@ import static com.hb.hkm.hkmeexpandedview.R.styleable;
 /**
  * Created by hesk on 2/24/15.
  */
-public class CatelogView extends LinearLayout implements View.OnClickListener, SpringListener {
+public class CatelogView extends RelativeLayout implements View.OnClickListener, SpringListener {
     private static String TAG = ".CatelogView";
     // Create a system to run the physics loop for a set of springs.
     private static SpringSystem springSystem = SpringSystem.create();
-    private LinearLayout.LayoutParams mCompressedParams;
-    private LinearLayout.LayoutParams mExpandedParams;
-
+    //  private LinearLayout.LayoutParams mCompressedParams;
+    private RelativeLayout.LayoutParams mCompressedParams;
+    // private LinearLayout.LayoutParams mExpandedParams;
+    private RelativeLayout.LayoutParams mExpandedParams;
+    private static int ViewId = 0;
 
     private boolean mExpanded = false;
     private int
@@ -44,7 +46,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             red = 0, green = 0, blue = 0, viewHeightHalf = 0, viewWidthHalf = 0;
     private String src_url = "";
     //  private RelativeLayout frame;
-    private LinearLayout layoutnow;
+    private View layoutnow;
     private ListView childLayout;
     private TextView text_view;
     private CatelogViewBuilder cateb;
@@ -115,10 +117,9 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
         return new RelativeLayout.LayoutParams(-1, h);
     }
 
-    private LayoutParams getParamsL(int h) {
+    private LinearLayout.LayoutParams getParamsL(int h) {
         return new LinearLayout.LayoutParams(-1, h);
     }
-
 
     private int getItemLayoutId() {
         return resLayout == 0 ? cateb.getChildItemLayoutResId() : resLayout;
@@ -126,31 +127,32 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
     private void inflate() {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutnow = (LinearLayout) inflater.inflate(R.layout.base_layout, this, true);
+        layoutnow = inflater.inflate(R.layout.base_layout, this, true);
         child = (LinearLayout) inflater.inflate(getItemLayoutId(), null, false);
         mframeLayout = (FrameLayout) layoutnow.findViewById(R.id.conframer);
         childLayout = (ListView) layoutnow.findViewById(R.id.list);
-        // image_location = (ImageView) findViewById(R.id.image_src);
-        // text_view = (TextView) findViewById(R.id.secondlayertext);
     }
 
-
-    private void setFragment(Fragment object) {
+    private void setFragment(Fragment object, String tag) {
+        ViewId++;
         FragmentTransaction t = cateb.getFTrans();
-        t.add(mframeLayout.getId(), object);
+        Log.d(TAG, "view ID: " + mframeLayout.getId());
+        t.add(mframeLayout.getId(), object, tag + ViewId);
         t.commit();
     }
 
     private void init_header() throws Exception {
 
         if (cateb.getHeight() > 0f) {
-            mCompressedParams = getParamsL(cateb.getHeightWhole());
+            //  mCompressedParams = getParamsL(cateb.getHeightWhole());
             mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
             if (cateb.useFragment()) {
                 // mframeLayout.setLayoutParams(getParamsR(cateb.getHeightWhole()));
-                setFragment(cateb.getCustomFragment());
+                setFragment(cateb.getCustomFragment(), "CUSTOM");
             } else {
-                setFragment(FeatureImage.newInstance(cateb.getBannerImageUrl(), cateb.getTitleOnSecondLayer()));
+                setFragment(FeatureImage.newInstance(cateb.getBannerImageUrl(),
+                                cateb.getTitleOnSecondLayer()),
+                        "DEFAULT");
                 mframeLayout.setBackgroundResource(R.drawable.normal_gradient);
 
             }
@@ -183,21 +185,25 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
 
             final int height = 400;
             Log.d(TAG, "layout height: " + height);
-            mExpandedParams = getParamsL((int) (height + cateb.getHeight()));
+            mExpandedParams = getParamsR((int) (height + cateb.getHeight()));
             springSystemsupport = new SpringSupport(height, (int) cateb.getHeight());
         }
     }
 
     private void init() {
-        setOrientation(LinearLayout.VERTICAL);
+        // setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.TOP);
         setBackgroundColor(color == 0 ? cateb.getColor() == 0 ? 0 : cateb.getColor() : color);
-        inflate();
         try {
+
+
+            inflate();
             init_header();
             init_listview();
             init_spring();
             requestLayout();
+
+
         } catch (Exception e) {
             //  e.printStackTrace();
             Log.d(TAG, e.getMessage());
@@ -265,7 +271,7 @@ public class CatelogView extends LinearLayout implements View.OnClickListener, S
             float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(S.getCurrentValue(),
                     0, 1, springSystemsupport.getFcompressed(), springSystemsupport.getFHeight()
             );
-            changeLayout(getParamsL((int) mappedValue));
+            changeLayout(getParamsR((int) mappedValue));
         }
 
         //   myView.setScaleX(scale);

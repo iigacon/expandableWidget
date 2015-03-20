@@ -3,7 +3,7 @@ package hkm.ui.expendablefragment.bindingholder;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hb.hkm.hkmeexpandedview.R;
+import hkm.ui.expendablefragment.R;
 
 /**
  * Created by hesk on 2/11/15.

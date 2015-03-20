@@ -33,7 +33,7 @@ public class ly extends Fragment implements View.OnClickListener, FragmentClicka
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        introtext = ((TextView) view.findViewById(R.id.tvFragText));
+        introtext = ((TextView) view.findViewById(R.id.tv_hk));
         Button b1 = (Button) view.findViewById(R.id.sexy);
         Button b2 = (Button) view.findViewById(R.id.no_sexy);
         b1.setOnClickListener(this);

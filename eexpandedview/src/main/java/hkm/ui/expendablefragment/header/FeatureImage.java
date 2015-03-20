@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hb.hkm.hkmeexpandedview.R;
+import hkm.ui.expendablefragment.R;
 import com.squareup.picasso.Picasso;
 
 /**

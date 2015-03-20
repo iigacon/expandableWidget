@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 
-import com.hb.hkm.hkmeexpandedview.R;
+import hkm.ui.expendablefragment.R;
 
 import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
 

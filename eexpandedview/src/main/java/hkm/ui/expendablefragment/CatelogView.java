@@ -23,14 +23,14 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-import com.hb.hkm.hkmeexpandedview.R;
+import hkm.ui.expendablefragment.R;
 
 import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;
 import hkm.ui.expendablefragment.header.FeatureImage;
 import hkm.ui.expendablefragment.header.FragmentInterface;
 import hkm.ui.expendablefragment.list.BasicListingAdapter;
 
-import static com.hb.hkm.hkmeexpandedview.R.styleable;
+import static hkm.ui.expendablefragment.R.styleable;
 
 /**
  * Created by hesk on 2/24/15.

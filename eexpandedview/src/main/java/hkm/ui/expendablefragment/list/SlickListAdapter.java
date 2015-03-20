@@ -2,7 +2,7 @@ package hkm.ui.expendablefragment.list;
 
 import android.content.Context;
 
-import com.hb.hkm.hkmeexpandedview.R;
+import hkm.ui.expendablefragment.R;
 import hkm.ui.expendablefragment.bindingholder.SlickHolder;
 import hkm.ui.expendablefragment.bindingholder.basicViewHolder;
 import hkm.ui.expendablefragment.databindingmodel.BasicDataBind;

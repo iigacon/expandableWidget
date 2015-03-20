@@ -34,7 +34,7 @@ USAGE BY HARD CODE
 ------
 
 ```xml
-    <com.hb.hkm.hkmeexpandedview.CatelogView
+    <hkm.ui.expendablefragment.CatelogView
         android:id="@+id/expandble_item"
         android:layout_width="100dp"
         android:layout_height="100dp"

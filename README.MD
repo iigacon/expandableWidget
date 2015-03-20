@@ -1,4 +1,4 @@
-Expandable Catelog View [![API](https://img.shields.io/badge/API-16%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=16)
+Expandable Catelog View [![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)
 ========
 The java library to delivery slick nice expandable widget view. FB Spring Featured Widget.
 
@@ -7,13 +7,8 @@ ABOUT
 ------
 If you have a need to have a UI component which can be add as a part of the container layout, you can programmatically adding fragment into the header. This way you can do more interactions anyhow you like.
 
-![image](art/device-2015-03-02-101454.png)
-
-![image](art/device-view.png)
-
-
-
-
+<img src="https://raw.github.com/jjhesk/expandableWidget/master/art/device-2015-03-02-101454.png" alt="screenshot" width="300px" height="auto" />
+<img src="https://raw.github.com/jjhesk/expandableWidget/master/art/device-view.png" alt="screenshot" width="300px" height="auto" />
 CUSTOMIZATION FOR STANDALONE HARDCODE IMPLEMENATION
 ------
 ```xml

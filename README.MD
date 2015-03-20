@@ -49,6 +49,24 @@ USAGE BY HARD CODE
 
 BUILD LAYOUT PROGRAMMICALLY
 ------
+
+
+```java
+/**
+BUILDING A CUSTOM FRAGMENT HEADER
+**/
+CatelogViewBuilder cb = new CatelogViewBuilder(this);
+cb.setHeaderFragment(YOUR_FRAGMENT_CLASS.class).setDataList(THE_LIST_DATA_BINDING).setFragmentHeight(RES_ID_OF_DIMENSION);
+container.addView(cb.create());
+
+/**
+BUILDING DEFAULT IMAGE BACKGROUND
+**/
+CatelogViewBuilder cb = new CatelogViewBuilder(this);
+cb.preset_src(IMAGE_URL, THE_HEIGHT_INT).rndColor().setImageTitle(TITLE_STRING).setDataList(bb);
+container.addView(cb.create());
+```
+
 [Default Presentation](https://github.com/jjhesk/expandableWidget/wiki#default-sample-code)
 
 [Advanced Presentation](https://github.com/jjhesk/expandableWidget/wiki#advanced-sample-code)

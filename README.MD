@@ -1,4 +1,4 @@
-Expandable Catelog View [![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)[![Version](https://img.shields.io/github/tag/jjhesk/expandableWidget.svg?label=maven)](https://jitpack.io/#jjhesk/expandableWidget/v0.2)
+Expandable Catelog View [![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)[![Version](https://img.shields.io/github/tag/jjhesk/expandableWidget.svg?label=maven)](https://jitpack.io/#jjhesk/expandableWidget/v0.2) [![gitpay](http://fc07.deviantart.net/fs70/f/2012/336/f/9/little_pixel_heart_by_tiny_bear-d5mtwiu.gif)](https://gratipay.com/jjhesk/)
 ========
 The java library to delivery slick nice expandable widget view. FB Spring Featured Widget.
 

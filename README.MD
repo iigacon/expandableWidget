@@ -10,9 +10,9 @@ Gradle
 ------
 
 ```gradle
-dependencies{
-compile ''
-}
+dependencies {
+	        compile 'com.github.jjhesk:expandableWidget:v0.2'
+	}
 ```
 
 ABOUT

@@ -14,6 +14,15 @@ dependencies {
 	        compile 'com.github.jjhesk:expandableWidget:v0.2'
 	}
 ```
+additional build script
+```gradle
+  repositories {
+        jcenter()
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+```
 
 ABOUT
 ------

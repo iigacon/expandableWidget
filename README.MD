@@ -11,7 +11,7 @@ Gradle
 
 ```gradle
 dependencies {
-	        compile 'com.github.jjhesk:expandableWidget:v0.2'
+	        compile 'com.github.jjhesk:expandableWidget:vX.X'
 	}
 ```
 additional build script

@@ -28,17 +28,3 @@ dependencies {
     compile 'com.makeramen:roundedimageview:1.5.0'
     compile 'com.squareup.picasso:picasso:2.5.0'
 }
-
-repositories {
-    mavenCentral()
-}
-
-// build a jar with source files
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
-}

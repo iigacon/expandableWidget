@@ -1,23 +1,32 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+
     repositories {
+
+        mavenCentral()
+
         jcenter()
+
         maven {
             url "https://jitpack.io"
         }
+
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+
         maven {
             url "http://jzaccone.github.io/SlidingMenu-aar"
         }
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.+'
-    }
-}
 
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+    }
+
+}
 
 allprojects {
     version = VERSION_NAME

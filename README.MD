@@ -12,7 +12,9 @@ Gradle
 ```gradle
 dependencies {
 	        compile 'com.github.jjhesk:expandableWidget:vX.X'
-	}
+}
+//or this way
+dependencies{ compile 'hkm.ui:ExpanableViewFragments:0.2.2-final:aar'}
 ```
 additional build script
 ```gradle

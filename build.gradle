@@ -2,19 +2,16 @@
 buildscript {
 
     repositories {
-        mavenCentral()
-        jcenter()
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
-        maven {
-            url "http://jzaccone.github.io/SlidingMenu-aar"
-        }
+        mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.2'
-       // classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
         classpath 'com.novoda:bintray-release:0.2.7'
     }
 }
@@ -22,12 +19,8 @@ buildscript {
 allprojects {
     version = VERSION_NAME
     group = PUBLISH_GROUP_ID
-
     repositories {
         mavenCentral()
         jcenter()
-        maven {
-            url "https://jitpack.io"
-        }
     }
 }

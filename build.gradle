@@ -13,14 +13,15 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
-        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.android.tools.build:gradle:1.1.2'
+       // classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.novoda:bintray-release:0.2.7'
     }
 }
 
 allprojects {
     version = VERSION_NAME
-    group = GROUP
+    group = PUBLISH_GROUP_ID
 
     repositories {
         mavenCentral()

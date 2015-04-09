@@ -1,0 +1,21 @@
+
+publish {
+    groupId = project.PUBLISH_GROUP_ID
+    artifactId = project.POM_ARTIFACT_ID
+    version = project.PUBLISH_VERSION
+    uploadName = project.POM_ARTIFACT_ID
+    description = project.POM_DESCRIPTION
+    website = project.POM_URL
+    autoPublish = true
+    dryRun = false
+}
+
+
+if (hasProperty('POM_DEVELOPER_ID')) {
+    publish.bintrayUser = project.POM_DEVELOPER_ID
+}
+
+if (hasProperty('bintray.apikey')) {
+    publish.bintrayKey = property('bintray.apikey')
+}
+

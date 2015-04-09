@@ -18,4 +18,46 @@ if (hasProperty('POM_DEVELOPER_ID')) {
 if (hasProperty('bintray.apikey')) {
     publish.bintrayKey = property('bintray.apikey')
 }
+bintrayUpload.doFirst {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
 
+                name ARTIFACT_NAME
+                description ARTIFACT_DESCRIPTION
+                url SITE_URL
+
+                licenses {
+                    license {
+                        name LICENCE_NAME
+                        url LICENCE_URL
+                        distribution LICENCE_DIST
+                    }
+                }
+
+                developers {
+                    developer {
+                        id DEVELOPER_ID
+                        name DEVELOPER_NAME
+                        email DEVELOPER_EMAIL
+                    }
+                }
+                issueManagement {
+                    system ISSUE_SYSTEM
+                    url ISSUE_URL
+                }
+
+                scm {
+                    connection SCM_CONNECTION
+                    developerConnection SCM_DEV_CONNECTION
+                    url SCM_URL
+
+                }
+            }
+        }
+    }
+
+
+}

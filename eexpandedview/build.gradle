@@ -1,6 +1,11 @@
 apply plugin: 'com.android.library'
-apply plugin: 'bintray-release'
 
+
+ext {
+    PUBLISH_GROUP_ID = 'com.hkm'
+    PUBLISH_ARTIFACT_ID = project.POM_ARTIFACT_ID
+    PUBLISH_VERSION = project.VERSION_NAME
+}
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
@@ -12,10 +17,8 @@ android {
         versionCode Integer.parseInt(project.VERSION_CODE)
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
+    lintOptions {
+        abortOnError false
     }
 }
 

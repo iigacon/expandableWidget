@@ -246,11 +246,18 @@ public class CatelogView<T extends Fragment & FragmentClickable> extends LinearL
         }
     }
 
+    /**
+     *
+     * @param l
+     */
     private void changeLayout(LayoutParams l) {
         setLayoutParams(l);
         requestLayout();
     }
 
+    /**
+     *
+     */
     public void triggerClose() {
         if (mExpanded) {
             if (cateb.hasSpring()) {
@@ -265,6 +272,9 @@ public class CatelogView<T extends Fragment & FragmentClickable> extends LinearL
         //  Log.d(toggleWatcher.TAG, "child item current state: " + mExpanded);
     }
 
+    /**
+     *
+     */
     private void perform_expand_view_action() {
         if (cateb.hasSpring()) {
             if (spring.isAtRest()) {
@@ -283,32 +293,53 @@ public class CatelogView<T extends Fragment & FragmentClickable> extends LinearL
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void openStack() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void closeStack() {
 
     }
 
+    /**
+     *
+     */
     @Override
     public void toggleStack() {
         perform_expand_view_action();
     }
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         perform_expand_view_action();
     }
 
+    /**
+     *
+     * @param spring
+     */
     @Override
     public void onSpringAtRest(Spring spring) {
         mExpanded = !mExpanded;
 
     }
 
+    /**
+     *
+     * @param spring
+     */
     @Override
     public void onSpringActivate(Spring spring) {
         Log.d(toggleWatcher.TAG, "onSpringActivate:" + spring.getId());
@@ -319,6 +350,10 @@ public class CatelogView<T extends Fragment & FragmentClickable> extends LinearL
         Log.d(toggleWatcher.TAG, "onSpringEndStateChange:" + spring.getId());
     }
 
+    /**
+     *
+     * @param S
+     */
     @Override
     public void onSpringUpdate(Spring S) {
         if (cateb.hasSpring()) {

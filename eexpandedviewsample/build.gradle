@@ -22,8 +22,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    //compile project(':eexpandedview')
-    compile 'hkm.ui:ExpanableViewFragments:0.2.2-final:@aar'
+    compile project(':eexpandedview')
+   // compile 'hkm.ui:ExpanableViewFragments:0.2.2-final:@aar'
     //compile(group: 'hkm.ui', name: 'ExpanableViewFragments', version: '0.2.2-final', ext: 'aar')
 }
 

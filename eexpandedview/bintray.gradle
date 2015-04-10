@@ -1,15 +1,17 @@
+apply plugin: 'bintray-release'
 
 publish {
+    userOrg = project.POM_DEVELOPER_ID
     groupId = project.PUBLISH_GROUP_ID
     artifactId = project.POM_ARTIFACT_ID
-    version = project.PUBLISH_VERSION
+    version = project.VERSION_NAME
     uploadName = project.POM_ARTIFACT_ID
     description = project.POM_DESCRIPTION
     website = project.POM_URL
     autoPublish = true
     dryRun = false
+    licences=[project.POM_LICENCE_NAME]
 }
-
 
 if (hasProperty('POM_DEVELOPER_ID')) {
     publish.bintrayUser = project.POM_DEVELOPER_ID
@@ -17,47 +19,4 @@ if (hasProperty('POM_DEVELOPER_ID')) {
 
 if (hasProperty('bintray.apikey')) {
     publish.bintrayKey = property('bintray.apikey')
-}
-bintrayUpload.doFirst {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-
-                name ARTIFACT_NAME
-                description ARTIFACT_DESCRIPTION
-                url SITE_URL
-
-                licenses {
-                    license {
-                        name LICENCE_NAME
-                        url LICENCE_URL
-                        distribution LICENCE_DIST
-                    }
-                }
-
-                developers {
-                    developer {
-                        id DEVELOPER_ID
-                        name DEVELOPER_NAME
-                        email DEVELOPER_EMAIL
-                    }
-                }
-                issueManagement {
-                    system ISSUE_SYSTEM
-                    url ISSUE_URL
-                }
-
-                scm {
-                    connection SCM_CONNECTION
-                    developerConnection SCM_DEV_CONNECTION
-                    url SCM_URL
-
-                }
-            }
-        }
-    }
-
-
 }
